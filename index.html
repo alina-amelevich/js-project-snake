@@ -8,10 +8,17 @@
   <title>Document</title>
 </head>
 <body>
-  <div class="container">
-    <object data="img/game-screen.svg" width="1000px" heigth="404px" type="image/svg+xml" view-box="200 200 0 0">
-    </object>
-    <canvas id="game_area" width="480px" height="320px"></canvas> <!--Клеточки 15*10-->
+  <div class="global_container">
+    <div class="canvas_container">
+      <canvas id="background_controller" width="1000px" heigth="404px"></canvas>
+      <canvas id="game_field" width="480px" height="320px"></canvas> <!--Клеточки 15*10-->
+    </div>
+    <div class="score_container">
+      <div id="score_img">
+        <img src="img/food1.png">
+      </div>
+      <span id="score_value">0</span>
+    </div>
   </div>
 <script src="js/game.js"></script>
 </body>

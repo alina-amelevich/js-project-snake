@@ -1,6 +1,9 @@
 'use strict'
+const backCanvas = document.querySelector('#background_controller');
+const backContext = backCanvas.getContext('2d');
 
-const canvas = document.querySelector('#game_area');
+
+const canvas = document.querySelector('#game_field');
 const context = canvas.getContext('2d');
 //Размер поля
 const fieldSize = { //параметры должны делиться на размер ячейки без остатка
@@ -23,6 +26,7 @@ const cell = {
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
+const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
 let reachWall = {}; //инфа до какой стены дошла змея
@@ -50,6 +54,7 @@ let dir; //Направление движения
 //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
 function changeDirection(EO) { 
   EO = EO || window.event;
+  EO.preventDefault();
   
   if (EO.keyCode === 37 && dir !== 'right') {
     dir = 'left';
@@ -110,10 +115,9 @@ function biteTail(head, snakeBody) {
 
 function draw() {
   console.log('рисование запущено');
-  context.clearRect(0, 0, fieldSize.x, fieldSize.y)
+  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
   context.drawImage(foodImg, food.x, food.y);
-  
-  
+
   let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
   let snakeY = snake[0].y;
   
@@ -146,18 +150,19 @@ function draw() {
     console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
   }
 
-
-  
   //Рисуем змею
   for(let i = 0; i < snake.length; i++) {
     context.fillStyle = (i == 0) ? 'darkgreen' : 'yellow';
+    context.strokeStyle = (i == 0) ? 'red' : 'pink'
     context.fillRect(snake[i].x, snake[i].y, cell.size, cell.size);
+    context.strokeRect(snake[i].x, snake[i].y, cell.size, cell.size);
     console.log('нарисован 1 квадратик змейки');
   }
-  
+
   //Как змея кушает
   if (snakeX == food.x && snakeY == food.y) {
     score++;
+    scoreSpan.textContent = score;
     food = { //рандомная генерация еды
       x: Math.floor(Math.random() * cell.amount.x) * cell.size,
       y: Math.floor(Math.random() * cell.amount.y) * cell.size
@@ -178,7 +183,7 @@ function draw() {
   snake.unshift(newHead); 
 }
 
-let game = setInterval(draw, 100);
+let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
 
 class Snake {
   constructor() {
