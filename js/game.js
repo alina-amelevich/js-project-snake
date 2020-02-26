@@ -54,37 +54,48 @@ function changeDirection(EO) {
   if (EO.keyCode === 37 && dir !== 'right') {
     dir = 'left';
     console.log('нажата стрелка вправо');
-  } else if (EO.keyCode === 38 && dir !== 'down') {
+  } 
+  else if (EO.keyCode === 38 && dir !== 'down') {
     dir = 'up';
     console.log('нажата стрелка вниз');
-  } else if (EO.keyCode === 39 && dir !== 'left') {
+  } 
+  else if (EO.keyCode === 39 && dir !== 'left') {
     dir = 'right';
     console.log('нажата стрелка влево');
-  } else if (EO.keyCode === 40 && dir !== 'up') {
+  } 
+  else if (EO.keyCode === 40 && dir !== 'up') {
     dir = 'down';
     console.log('нажата стрелка вверх');
   }
 }
 
+//Ф-ция прохождения через стены
 function throughWall(snakeX, snakeY) {
-
   if (snakeX < 0) {
     console.log('дошла до стенки');
     snakeX = fieldSize.x - cell.size;
     console.log('прошла через стенку');
-  } else if (snakeX > (fieldSize.x - cell.size)) {
+  } 
+  else if (snakeX > (fieldSize.x - cell.size)) {
     console.log('дошла до стенки');
     snakeX = 0;
     console.log('прошла через стенку');
-  } else if (snakeY < 0) {
+  } 
+  if (snakeY < 0) {
     console.log('дошла до стенки');
     snakeY = fieldSize.y - cell.size;
     console.log('прошла через стенку');
-  } else if (snakeY > (fieldSize.y - cell.size)) {
+  } 
+  else if (snakeY > (fieldSize.y - cell.size)) {
     console.log('дошла до стенки');
     snakeY = 0;
     console.log('прошла через стенку');
   }
+
+   return {
+    x: snakeX, 
+    y: snakeY
+  };
 }
 
 function biteTail(head, snakeBody) {
@@ -102,36 +113,10 @@ function draw() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y)
   context.drawImage(foodImg, food.x, food.y);
   
-  //Рисуем змею
-  for(let i = 0; i < snake.length; i++) {
-    context.fillStyle = (i == 0) ? 'darkgreen' : 'yellow';
-    context.fillRect(snake[i].x, snake[i].y, cell.size, cell.size);
-    console.log('нарисован 1 квадратик змейки');
-  }
-
+  
   let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
   let snakeY = snake[0].y;
-
-  //Как змея кушает
-  if (snakeX == food.x && snakeY == food.y) {
-    score++;
-    food = { //рандомная генерация еды
-      x: Math.floor(Math.random() * cell.amount.x) * cell.size,
-      y: Math.floor(Math.random() * cell.amount.y) * cell.size
-    };
-  } else {
-  snake.pop(); //Удаляем последний эл-т массива змеи
-  }
-
-  if (snakeX < 0 || snakeX > (fieldSize.x - cell.size)
-    || snakeY < 0 || snakeY > (fieldSize.y - cell.size)) 
-  {
-      console.log('стработала стенка');
-      // reachWall.x = snakeX;
-      // reachWall.y = snakeY;
-      throughWall(snakeX, snakeY);
-  }
-
+  
   
   //Движение змеи
   if (dir == 'left') { 
@@ -147,6 +132,40 @@ function draw() {
     snakeY += cell.size;
   }
   
+  //Переменная для хрананения позиции змейки после прохождения через стену
+  let afterWallPos = {};
+
+  //Если змея достигла стены, вызывается ф-ция прохождения через стену
+  if (snakeX < 0 || snakeX > (fieldSize.x - cell.size)
+  || snakeY < 0 || snakeY > (fieldSize.y - cell.size)) 
+  {
+    console.log('было snakeX: ', snakeX, '\n было snakeY: ', snakeY);
+    afterWallPos = throughWall(snakeX, snakeY);
+    snakeX = afterWallPos.x;
+    snakeY = afterWallPos.y;
+    console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
+  }
+
+
+  
+  //Рисуем змею
+  for(let i = 0; i < snake.length; i++) {
+    context.fillStyle = (i == 0) ? 'darkgreen' : 'yellow';
+    context.fillRect(snake[i].x, snake[i].y, cell.size, cell.size);
+    console.log('нарисован 1 квадратик змейки');
+  }
+  
+  //Как змея кушает
+  if (snakeX == food.x && snakeY == food.y) {
+    score++;
+    food = { //рандомная генерация еды
+      x: Math.floor(Math.random() * cell.amount.x) * cell.size,
+      y: Math.floor(Math.random() * cell.amount.y) * cell.size
+    };
+  } else {
+    snake.pop(); //Удаляем последний эл-т массива змеи
+  }
+
   //Создаем новую голову змеи
   let newHead = {
     x: snakeX,
