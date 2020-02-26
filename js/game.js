@@ -1,0 +1,175 @@
+'use strict'
+
+const canvas = document.querySelector('#game_area');
+const context = canvas.getContext('2d');
+//Размер поля
+const fieldSize = { //параметры должны делиться на размер ячейки без остатка
+  x: parseInt(canvas.offsetWidth), 
+  y: parseInt(canvas.offsetHeight)
+};
+console.log('Размер поля: ', fieldSize.x, fieldSize.y);
+
+const cell = {
+  size: 32, //размер ячейки
+  amount: { //кол-во ячеек
+    x: fieldSize.x / 32,
+    y: fieldSize.y / 32
+  },
+  center: { // центральная ячейка на поле, округл в меньшую сторону
+    x: Math.floor(fieldSize.x / 2 / 32),
+    y: Math.floor(fieldSize.y / 2 / 32)
+  }
+};
+console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
+console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
+
+let score = 0; //счет
+
+let reachWall = {}; //инфа до какой стены дошла змея
+
+const foodImg = new Image(); //еда
+foodImg.src = 'img/food1.png';
+let food = { //рандомная генерация еды
+  x: Math.floor(Math.random() * cell.amount.x) * cell.size,
+  y: Math.floor(Math.random() * cell.amount.y) * cell.size
+};
+console.log('Еда сейчас по оси X: ', food.x);
+console.log('Еда сейчас по оси Y: ', food.y);
+
+let snake = [];
+
+//Первоначальные координаты змеи
+snake[0] = {
+  x: cell.center.x * cell.size,
+  y: cell.center.y * cell.size
+};
+
+document.addEventListener('keydown', changeDirection);
+
+let dir; //Направление движения
+//Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
+function changeDirection(EO) { 
+  EO = EO || window.event;
+  
+  if (EO.keyCode === 37 && dir !== 'right') {
+    dir = 'left';
+    console.log('нажата стрелка вправо');
+  } else if (EO.keyCode === 38 && dir !== 'down') {
+    dir = 'up';
+    console.log('нажата стрелка вниз');
+  } else if (EO.keyCode === 39 && dir !== 'left') {
+    dir = 'right';
+    console.log('нажата стрелка влево');
+  } else if (EO.keyCode === 40 && dir !== 'up') {
+    dir = 'down';
+    console.log('нажата стрелка вверх');
+  }
+}
+
+function throughWall(snakeX, snakeY) {
+
+  if (snakeX < 0) {
+    console.log('дошла до стенки');
+    snakeX = fieldSize.x - cell.size;
+    console.log('прошла через стенку');
+  } else if (snakeX > (fieldSize.x - cell.size)) {
+    console.log('дошла до стенки');
+    snakeX = 0;
+    console.log('прошла через стенку');
+  } else if (snakeY < 0) {
+    console.log('дошла до стенки');
+    snakeY = fieldSize.y - cell.size;
+    console.log('прошла через стенку');
+  } else if (snakeY > (fieldSize.y - cell.size)) {
+    console.log('дошла до стенки');
+    snakeY = 0;
+    console.log('прошла через стенку');
+  }
+}
+
+function biteTail(head, snakeBody) {
+  console.log('запущена ф-ция съедания хвоста');
+  for(let i = 0; i < snakeBody.length; i++) {
+    if (head.x === snakeBody[i].x && head.y === snakeBody[i].y ) {
+      console.log('хвост съеден');
+      clearInterval(game);
+    }
+  }
+}
+
+function draw() {
+  console.log('рисование запущено');
+  context.clearRect(0, 0, fieldSize.x, fieldSize.y)
+  context.drawImage(foodImg, food.x, food.y);
+  
+  //Рисуем змею
+  for(let i = 0; i < snake.length; i++) {
+    context.fillStyle = (i == 0) ? 'darkgreen' : 'yellow';
+    context.fillRect(snake[i].x, snake[i].y, cell.size, cell.size);
+    console.log('нарисован 1 квадратик змейки');
+  }
+
+  let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
+  let snakeY = snake[0].y;
+
+  //Как змея кушает
+  if (snakeX == food.x && snakeY == food.y) {
+    score++;
+    food = { //рандомная генерация еды
+      x: Math.floor(Math.random() * cell.amount.x) * cell.size,
+      y: Math.floor(Math.random() * cell.amount.y) * cell.size
+    };
+  } else {
+  snake.pop(); //Удаляем последний эл-т массива змеи
+  }
+
+  if (snakeX < 0 || snakeX > (fieldSize.x - cell.size)
+    || snakeY < 0 || snakeY > (fieldSize.y - cell.size)) 
+  {
+      console.log('стработала стенка');
+      // reachWall.x = snakeX;
+      // reachWall.y = snakeY;
+      throughWall(snakeX, snakeY);
+  }
+
+  
+  //Движение змеи
+  if (dir == 'left') { 
+    snakeX -= cell.size;
+  }
+  if (dir == 'up') {
+    snakeY -= cell.size;
+  }
+  if (dir == 'right') {
+    snakeX += cell.size;
+  }
+  if (dir == 'down') {
+    snakeY += cell.size;
+  }
+  
+  //Создаем новую голову змеи
+  let newHead = {
+    x: snakeX,
+    y: snakeY
+  };
+  
+  biteTail(newHead, snake);
+  
+  //Добавляем элемент 'голова' в массив змеи
+  snake.unshift(newHead); 
+}
+
+let game = setInterval(draw, 100);
+
+class Snake {
+  constructor() {
+    this.color = 'yellow';
+    this.lgth = 200; //нач. длина хвоста змеи (width)
+    this.fat = 20; //толщина змеи (heigth)
+    this.speed = 4; //скорость движения змеи
+    this.head = {}; //голова змеи
+    this.dir = 3; //Направл-е движ. змеи: 1-влево, 2-вверх 3-вправо, 4-вниз
+  }
+  // animate() {
+    // }
+}

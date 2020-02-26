@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"  width="704px" height = "480px">
+  <title>
+    white checkered blue squares light blue #add8e6 #ffffff diagonal 0° 32px
+  </title>
+  <desc>
+    white checkered blue squares light blue #add8e6 #ffffff diagonal 0° 32px
+  </desc>
+
+  <defs>
+    <pattern id="p1" patternUnits="userSpaceOnUse" x="0" y="0" width="64" height="64" patternTransform="rotate(360 0)">
+      <rect x="0" y="0" width="32" height="32" rx="0" ry="0" fill="#add8e6" />
+      <rect x="32" y="0" width="32" height="32" rx="0" ry="0" fill="#ffffff" />
+      <rect x="32" y="32" width="32" height="32" rx="0" ry="0" fill="#add8e6" />
+      <rect x="0" y="32" width="32" height="32" rx="0" ry="0" fill="#ffffff" />
+    </pattern>
+  </defs>
+
+  <rect width="704" height="480" x="0" y="0" fill="url(#p1)" />
+</svg>

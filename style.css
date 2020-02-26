@@ -1,0 +1,23 @@
+.container {
+    margin: 100px;
+    margin: auto;
+    position: relative;
+}
+.container>object {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+   ;
+}
+#game_area {
+    background: url(img/squares.svg);
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 480px; 
+    height: 320px;
+    display: block;
+    padding: 0;
+    z-index: 10;
+    left: calc(50% - 240px);
+    top: calc(50% - 160px);
+}
