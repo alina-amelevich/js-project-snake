@@ -1,6 +1,13 @@
 'use strict'
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
+// const buttImgUp = new Image(); 
+// buttImgUp.src = 'img/ico-green.png';
+
+// window.onload = function() {
+//   backContext.drawImage(buttImgUp, 830, 0);
+//   console.log(buttImgUp);
+// };
 
 
 const canvas = document.querySelector('#game_field');
@@ -12,33 +19,61 @@ const fieldSize = { //параметры должны делиться на ра
 };
 console.log('Размер поля: ', fieldSize.x, fieldSize.y);
 
+const cellSize = 24;
 const cell = {
-  size: 32, //размер ячейки
+  size: cellSize, //размер ячейки
+  quarter: cellSize / 4, //четвертинка ячейки
   amount: { //кол-во ячеек
-    x: fieldSize.x / 32,
-    y: fieldSize.y / 32
+    x: fieldSize.x / cellSize,
+    y: fieldSize.y / cellSize
   },
   center: { // центральная ячейка на поле, округл в меньшую сторону
-    x: Math.floor(fieldSize.x / 2 / 32),
-    y: Math.floor(fieldSize.y / 2 / 32)
+    x: Math.floor(fieldSize.x / 2 / cellSize),
+    y: Math.floor(fieldSize.y / 2 / cellSize)
   }
 };
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
+let gameover = false;
 const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
-let reachWall = {}; //инфа до какой стены дошла змея
+// let reachWall = {}; //инфа до какой стены дошла змея
 
-const foodImg = new Image(); //еда
-foodImg.src = 'img/food1.png';
+//еда
+const foodArray = [ //массив со всеми картинками еды
+  '',
+  'img/food1.png',
+  'img/food2.png',
+  'img/food3.png',
+  'img/food4.png',
+  'img/food5.png',
+  'img/food6.png',
+  'img/food7.png',
+  'img/food8.png',
+  'img/food9.png',
+  'img/food10.png',
+  'img/food11.png',
+  'img/food12.png',
+  'img/food13.png',
+  'img/food14.png',
+  'img/food15.png',
+  'img/food16.png',
+  'img/food17.png',
+];
+
+let foodImg = new Image(); 
+foodImg.src = foodArray[randomizer(1, foodArray.length)]; //рандомная еда
+
 let food = { //рандомная генерация еды
   x: Math.floor(Math.random() * cell.amount.x) * cell.size,
   y: Math.floor(Math.random() * cell.amount.y) * cell.size
 };
 console.log('Еда сейчас по оси X: ', food.x);
 console.log('Еда сейчас по оси Y: ', food.y);
+
+let isFoodChange = false; //указывается, если еда требует перегенерации
 
 let snake = [];
 
@@ -49,6 +84,12 @@ snake[0] = {
 };
 
 document.addEventListener('keydown', changeDirection);
+
+function randomizer (a, b) { //a:нижняя граница диапазона, b:верхняя
+  return Math.floor(
+    Math.random() * (b - a + 1)
+  ) + a;
+}
 
 let dir; //Направление движения
 //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
@@ -62,7 +103,7 @@ function changeDirection(EO) {
   } 
   else if (EO.keyCode === 38 && dir !== 'down') {
     dir = 'up';
-    console.log('нажата стрелка вниз');
+  console.log('нажата стрелка вниз');
   } 
   else if (EO.keyCode === 39 && dir !== 'left') {
     dir = 'right';
@@ -108,6 +149,7 @@ function biteTail(head, snakeBody) {
   for(let i = 0; i < snakeBody.length; i++) {
     if (head.x === snakeBody[i].x && head.y === snakeBody[i].y ) {
       console.log('хвост съеден');
+      gameover = true;
       clearInterval(game);
     }
   }
@@ -116,23 +158,48 @@ function biteTail(head, snakeBody) {
 function draw() {
   console.log('рисование запущено');
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
-  context.drawImage(foodImg, food.x, food.y);
+
+  //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
+  try {
+    if (isFoodChange) {
+      isFoodChange = false; //рандомная еда
+      foodImg.src = foodArray[randomizer(1, foodArray.length)];
+    }
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 1;
+    context.shadowOffsetY = 2;
+    context.shadowColor = 'orange'; 
+    context.drawImage(foodImg, food.x, food.y); //рисование еды
+  }
+  catch (ex) {
+    console.error('возникло исключение типа: ' + ex.name);
+    isFoodChange = true;
+    if (isFoodChange) {
+      isFoodChange = false; //рандомная еда
+      foodImg.src = foodArray[randomizer(1, foodArray.length)];
+    }
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 1;
+    context.shadowOffsetY = 2;
+    context.shadowColor = 'orange'; 
+    context.drawImage(foodImg, food.x, food.y); //рисование еды
+  }
 
   let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
   let snakeY = snake[0].y;
   
-  
   //Движение змеи
+  
   if (dir == 'left') { 
     snakeX -= cell.size;
   }
-  if (dir == 'up') {
+  else if (dir == 'up') {
     snakeY -= cell.size;
   }
-  if (dir == 'right') {
+  else if (dir == 'right') {
     snakeX += cell.size;
   }
-  if (dir == 'down') {
+  else if (dir == 'down') {
     snakeY += cell.size;
   }
   
@@ -152,18 +219,33 @@ function draw() {
 
   //Рисуем змею
   for(let i = 0; i < snake.length; i++) {
-    context.fillStyle = (i == 0) ? 'darkgreen' : 'yellow';
-    context.strokeStyle = (i == 0) ? 'red' : 'pink'
-    context.fillRect(snake[i].x, snake[i].y, cell.size, cell.size);
-    context.strokeRect(snake[i].x, snake[i].y, cell.size, cell.size);
-    console.log('нарисован 1 квадратик змейки');
+    context.beginPath();
+    context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
+    context.shadowBlur = 5;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 1; // #778cbd83 
+    context.shadowColor = '#48577894'; 
+    context.moveTo(snake[i].x + cell.quarter, snake[i].y);
+    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
+    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
+    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
+    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
+    context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
+    context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
+    context.lineTo(snake[i].x, snake[i].y + cell.quarter);
+    context.fill();
+    console.log('нарисован 1 сегмент змейки');
   }
 
   //Как змея кушает
   if (snakeX == food.x && snakeY == food.y) {
     score++;
     scoreSpan.textContent = score;
-    food = { //рандомная генерация еды
+    setTimeout(changeFood, 0);
+    function changeFood() {
+      isFoodChange = true;
+    }
+    food = { //рандомная генерация позиции еды
       x: Math.floor(Math.random() * cell.amount.x) * cell.size,
       y: Math.floor(Math.random() * cell.amount.y) * cell.size
     };
@@ -184,6 +266,13 @@ function draw() {
 }
 
 let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
+
+
+if (gameover == true) {
+  console.log('проигрыш')
+  alert('Game over');
+}
+
 
 class Snake {
   constructor() {
