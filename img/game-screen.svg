@@ -7,9 +7,12 @@
   </linearGradient>
 
   <radialGradient id="radial-gradient">
-   <stop stop-color="#8295c0" offset="0%" stop-opacity="0.5"/>
+   <stop stop-color="#edd5cd" offset="5%" stop-opacity="0.7"/>
+   <!-- <stop stop-color="#ffd881" offset="40%" stop-opacity="0.5"/> -->
+   <stop stop-color="#d97c7ab6" offset="100%" stop-opacity="0.9"/>
+   <!-- <stop stop-color="#8295c0" offset="0%" stop-opacity="0.5"/>
    <stop stop-color="#7189bf" offset="50%" stop-opacity="0.5"/>
-   <stop stop-color="#485778" offset="100%" stop-opacity="0.8"/>
+   <stop stop-color="#52607e" offset="100%" stop-opacity="0.7"/> -->
   </radialGradient>
 
  <g>

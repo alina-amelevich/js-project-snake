@@ -1,13 +1,14 @@
 'use strict'
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
-// const buttImgUp = new Image(); 
-// buttImgUp.src = 'img/ico-green.png';
 
-// window.onload = function() {
-//   backContext.drawImage(buttImgUp, 830, 0);
-//   console.log(buttImgUp);
-// };
+const buttImgUp = new Image(); 
+buttImgUp.src = 'img/ico-green.png';
+
+window.onload = function() {
+  backContext.drawImage(buttImgUp, 801, 0);
+  console.log(buttImgUp);
+}
 
 
 const canvas = document.querySelector('#game_field');
