@@ -1,11 +1,25 @@
 'use strict'
+
+//Получаем кнопки изменения направления из Object svg 
+//и кладем их в переменные
+// window.onload = {
+  // }
+const gameContainer = document.querySelector('.game_container');
+const objectSvg = document.getElementById('dir-butt-object'); //получаем элемент object
+console.log(objectSvg);
+const svgDocument = objectSvg.contentDocument; //получаем svg элемент внутри object
+console.log(svgDocument);
+const upSvg = svgDocument.getElementById('svg_13'); //получаем нужный элемент внутри svg
+console.log(upSvg);
+
+upSvg.setAttribute("fill", "black"); 
+
+
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
 
 const canvas = document.querySelector('#game_field');
 const context = canvas.getContext('2d');
-
-// const gameContainer = document.querySelector('.game_container');
 
 
 //Размер поля
