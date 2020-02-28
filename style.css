@@ -15,11 +15,11 @@ body {
 	}
 }
 
-@media screen and (orientation: portrait), screen and (max-width: 1023px) {
+@media screen and (orientation: portrait), screen and (max-width: 1024px) {
 	html body {
 		animation: none;
 		background: #edd5cd;
-		height: 1500px;
+		/* height: 1500px; */
 	}
 	canvas#background_controller {
 		display: none;
@@ -27,21 +27,8 @@ body {
 	.global_container .game_container {
 		width: 490px;
 		top: 10px;
-		/* height: 500px; */
+		height: 1000px;
 	}
-	/* #butt_save_record {
-		top: 380px;
-	}
-	#butt-all-records {
-		top: 425px;
-	}
-	#user_name {
-		top: 320px;
-	} 
-	#label_save {
-		top: 160px;
-	} */
-	
 }
 
 .global_container {
@@ -78,7 +65,7 @@ body {
 	padding: 0px;
 	z-index: 10;
 	left: calc(50% - 240px);
-	top: calc(50% - 168px);
+	top: calc((404px - 336px) / 2);
 	box-sizing: content-box;
 }
 .score_container {
