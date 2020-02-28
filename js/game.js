@@ -2,15 +2,6 @@
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
 
-const buttImgUp = new Image(); 
-buttImgUp.src = 'img/ico-green.png';
-
-window.onload = function() {
-  backContext.drawImage(buttImgUp, 801, 0);
-  console.log(buttImgUp);
-}
-
-
 const canvas = document.querySelector('#game_field');
 const context = canvas.getContext('2d');
 //Размер поля
@@ -169,7 +160,7 @@ function draw() {
     context.shadowBlur = 20;
     context.shadowOffsetX = 1;
     context.shadowOffsetY = 2;
-    context.shadowColor = 'orange'; 
+    context.shadowColor = '#be6c6a'; 
     context.drawImage(foodImg, food.x, food.y); //рисование еды
   }
   catch (ex) {
@@ -182,7 +173,7 @@ function draw() {
     context.shadowBlur = 20;
     context.shadowOffsetX = 1;
     context.shadowOffsetY = 2;
-    context.shadowColor = 'orange'; 
+    context.shadowColor = '#be6c6a'; 
     context.drawImage(foodImg, food.x, food.y); //рисование еды
   }
 
