@@ -9,27 +9,26 @@
 </head>
 <body>
   <div class="global_container">
-    <div class="canvas_container">
+    <div class="game_container">
       <canvas id="background_controller" width="1000px" heigth="404px"></canvas>
       <canvas id="game_field" width="480px" height="336px"></canvas> <!--20x14-->
 
-      <button type="button" id="butt-start" onclick="newGame()">Играть</button>
+      <button type="button" id="butt_start" onclick="newGame()">Играть</button>
       <div class="hidden">
-        <label for="butt-save-record" id="label-save">
+        <label for="butt_save_record" id="label_save">
           <p>Вы проиграли!</p>
+          <p>Общий счёт: <span id="final_score"></span></p>
           Введите свое имя и нажмите "Сохранить".
         </label>
-        <input type="text" id="user-name">
-        <button type="button" id="butt-save-record" onclick="newGame()">Сохранить</button>
+        <input type="text" id="user_name" name="user_name">
+        <button type="button" id="butt_save_record" onclick="newGame()">Сохранить</button>
         <button type="button" id="butt-all-records" onclick="newGame()">Чемпионы</button>
       </div>
       <!-- <object type="image/svg+xml" data="img/ico-up-svg.svg" id="butt-up" class="button" width="48px" heigth="48px"></object> -->
-    </div>
-    <div class="score_container">
-      <div id="score_img">
-        <img src="img/black-32.png">
+      <div class="score_container">
+        <img src="img/black-32.png" id="score_img">
+        <span id="score_value">0</span>
       </div>
-      <span id="score_value">0</span>
     </div>
   </div>
 <script src="js/game.js"></script>

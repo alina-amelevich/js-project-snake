@@ -87,7 +87,7 @@ let dir; //Направление движения
 //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
 function changeDirection(EO) { 
   EO = EO || window.event;
-  EO.preventDefault();
+  // EO.preventDefault();
   
   if (EO.keyCode === 37 && dir !== 'right') {
     dir = 'left';
@@ -172,6 +172,8 @@ function gameOver() {
 function showHiddenRecord() {
   const recordText = document.querySelector('.hidden');
   recordText.style.display = "block";
+  const finalScore = document.querySelector('#final_score');
+  finalScore.textContent = score;
 }
 
 function newGame() {
