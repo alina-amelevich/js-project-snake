@@ -38,6 +38,7 @@ body {
 	width: 1000px; 
 	height: 404px;
 	box-sizing: content-box;
+	display: block;
 }
 #game_field {
 	background: url(img/squares.svg);
@@ -98,7 +99,77 @@ body {
 	font-family: sans-serif ;
 	font-size: 20px;
 	color: #fff1f1;
-	;
+	box-sizing: border-box;
+}
+#butt-save-record {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 280px;
+	left: calc(50% - 60px);
+	z-index: 12; 
+	background: linear-gradient(165deg, #edd5cd, #fa5c18);
+	border: solid #855f3377 2px;
+	border-radius: 7%;
+	width: 120px;
+	height: 35px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: #fff1f1;
+	box-sizing: border-box;
+}
+#butt-all-records {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 325px;
+	left: calc(50% - 60px);
+	z-index: 12; 
+	background: linear-gradient(165deg, #edd5cd, #fa5c18);
+	border: solid #855f3377 2px;
+	border-radius: 7%;
+	width: 120px;
+	height: 35px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: #fff1f1;
+	box-sizing: border-box;
+}
+#user-name {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 220px;
+	left: calc(50% - 100px);
+	z-index: 12; 
+	background:  #edd5cd;
+	border: solid #855f3377 2px;
+	border-radius: 7%;
+	width: 200px;
+	height: 35px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: rgb(70, 70, 70);
+	box-sizing: border-box;
+}
+#label-save {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 120px;
+	left: calc(50% - 200px);
+	z-index: 12; 
+	border-radius: 7%;
+	text-align: center;
+	width: 400px;
+	height: 35px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: rgb(70, 70, 70);
+	box-sizing: border-box;
 
-
+}
+ /* Не забыть поменять на "none" */
+.hidden {
+	display: block; 
 }

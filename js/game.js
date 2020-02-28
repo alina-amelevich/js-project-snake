@@ -136,17 +136,46 @@ function throughWall(snakeX, snakeY) {
   };
 }
 
-function biteTail(head, snakeBody) {
-  console.log('запущена ф-ция съедания хвоста');
-  for(let i = 0; i < snakeBody.length; i++) {
-    if (head.x === snakeBody[i].x && head.y === snakeBody[i].y ) {
-      console.log('хвост съеден');
-      gameover = true;
-      alert("GAME OVER");
-      document.location.reload();
-      clearInterval(game);
-    }
+//Рисование змеи
+function drawSnake() {
+  for(let i = 0; i < snake.length; i++) {
+    context.beginPath();
+    context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
+    context.shadowBlur = 5;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 1; 
+    context.shadowColor = '#48577894'; 
+    context.moveTo(snake[i].x + cell.quarter, snake[i].y);
+    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
+    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
+    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
+    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
+    context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
+    context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
+    context.lineTo(snake[i].x, snake[i].y + cell.quarter);
+    context.fill();
+    console.log('нарисован 1 сегмент змейки');
   }
+}
+
+// Проигрыш
+function gameOver() {
+  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
+  // document.location.reload();
+  clearInterval(game);
+
+  //if (score > ..)
+  showHiddenRecord();
+  //else showHiddenLose() прописать ф-цию и сделать dom-елемент
+}
+
+function showHiddenRecord() {
+  const recordText = document.querySelector('.hidden');
+  recordText.style.display = "block";
+}
+
+function newGame() {
+  document.location.reload();
 }
 
 function draw() {
@@ -211,25 +240,8 @@ function draw() {
     console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
   }
 
-  //Рисуем змею
-  for(let i = 0; i < snake.length; i++) {
-    context.beginPath();
-    context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-    context.shadowBlur = 5;
-    context.shadowOffsetX = 0;
-    context.shadowOffsetY = 1; // #778cbd83 
-    context.shadowColor = '#48577894'; 
-    context.moveTo(snake[i].x + cell.quarter, snake[i].y);
-    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
-    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
-    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
-    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
-    context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
-    context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
-    context.lineTo(snake[i].x, snake[i].y + cell.quarter);
-    context.fill();
-    console.log('нарисован 1 сегмент змейки');
-  }
+  //Запуск рисования змеи
+  drawSnake();
 
   //Как змея кушает
   if (snakeX == food.x && snakeY == food.y) {
@@ -253,7 +265,12 @@ function draw() {
     y: snakeY
   };
   
-  biteTail(newHead, snake);
+    for(let i = 0; i < snake.length; i++) {
+      if (newHead.x === snake[i].x && newHead.y === snake[i].y ) {
+        console.log('хвост съеден');
+        gameOver();
+      }
+    }
   
   //Добавляем элемент 'голова' в массив змеи
   snake.unshift(newHead); 
