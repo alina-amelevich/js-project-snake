@@ -5,10 +5,7 @@ const backContext = backCanvas.getContext('2d');
 const canvas = document.querySelector('#game_field');
 const context = canvas.getContext('2d');
 
-const buttUp = new Image(); 
-(function() {
-  buttUp.src = 'img/up-butt.svg';
-})()
+// const gameContainer = document.querySelector('.game_container');
 
 
 //Размер поля

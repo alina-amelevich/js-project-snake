@@ -19,7 +19,6 @@ body {
 	html body {
 		animation: none;
 		background: #edd5cd;
-		/* height: 1500px; */
 	}
 	canvas#background_controller {
 		display: none;
@@ -27,7 +26,10 @@ body {
 	.global_container .game_container {
 		width: 490px;
 		top: 10px;
-		height: 1400px;
+		height: 1024px;
+	}
+	object.dir-butt {
+		display: none;
 	}
 }
 
@@ -190,4 +192,15 @@ body {
  /* Не забыть поменять на "none" */
 .hidden {
 	display: block; 
+}
+
+.dir-butt {
+	margin-left: auto;
+	margin-right: auto;
+	position: absolute;
+	top: 0px;
+	width: 1000px; 
+	height: 404px;
+	box-sizing: content-box;
+	display: block;
 }
