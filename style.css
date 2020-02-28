@@ -3,7 +3,6 @@ body {
 	background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
-
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
@@ -15,7 +14,6 @@ body {
 		background-position: 0% 50%;
 	}
 }
-
 
 .global_container {
 	position: relative;
@@ -58,7 +56,7 @@ body {
 	font-family: sans-serif ;
 	font-size: 30px;
 	color: rgb(70, 70, 70);
-	margin-top: 50px;
+	margin-top: 60px;
 	position: relative;
 	top: 60px;
 	display: flex;
@@ -89,18 +87,17 @@ body {
 	position: absolute;
 	margin-left: auto;
 	margin-right: auto;
-	top: 452px;
-	left: calc(50% - 200px);
+	top: 422px;
+	left: calc(50% - 240px);
 	z-index: 12; 
-	background: linear-gradient(165deg, #c6c9d6, #485778);
-	border: solid #5f709477 2px;
-	border-radius: 5%;
+	background: linear-gradient(165deg, #edd5cd, #fa5c18);
+	border: solid #855f3377 2px;
+	border-radius: 7%;
 	width: 100px;
-	height: 50px;
-	box-shadow: ;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
-	font-size: 25px;
-	color: #ffffff;
+	height: 35px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: #fff1f1;
 	;
 
 

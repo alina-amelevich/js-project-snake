@@ -142,6 +142,8 @@ function biteTail(head, snakeBody) {
     if (head.x === snakeBody[i].x && head.y === snakeBody[i].y ) {
       console.log('хвост съеден');
       gameover = true;
+      alert("GAME OVER");
+      document.location.reload();
       clearInterval(game);
     }
   }
