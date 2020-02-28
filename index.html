@@ -14,7 +14,7 @@
       <canvas id="game_field" width="480px" height="336px"></canvas> <!--20x14-->
       <object data="img/method-draw-image.svg" type="image/svg+xml" class="dir-butt" width="1000px" heigth="404px"></object>
 
-      <button type="button" id="butt_start" onclick="newGame()">Играть</button>
+      <button type="button" id="butt_start" onclick="newGame()" class="btn">Играть</button>
       <div class="hidden">
         <label for="butt_save_record" id="label_save">
           <p>Вы проиграли!</p>
@@ -22,8 +22,8 @@
           Введите свое имя и нажмите "Сохранить".
         </label>
         <input type="text" id="user_name" name="user_name">
-        <button type="button" id="butt_save_record" onclick="newGame()">Сохранить</button>
-        <button type="button" id="butt-all-records" onclick="newGame()">Рекорды</button>
+        <button type="button" id="butt_save_record" onclick="newGame()" class="btn">Сохранить</button>
+        <button type="button" id="butt-all-records" onclick="newGame()" class="btn">Рекорды</button>
       </div>
       <!-- <object type="image/svg+xml" data="img/ico-up-svg.svg" id="butt-up" class="button" width="48px" heigth="48px"></object> -->
       <div class="score_container">

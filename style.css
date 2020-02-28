@@ -92,65 +92,36 @@ body {
 
 /* Элементов этого класса пока нет */
 /* Здесь тестирую цвета */
-.button {
+.btn {
 	position: absolute;
-	z-index: 11;
-	display: block;
-	color: #f3c769;
-	color: #be6c6a;
-	color: #ceafaf;
-	background-color: #edd5cd;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 12; 
+	background: linear-gradient(165deg, #edd5cd, #fa5c18);
+	border: solid #855f3377 2px;
+	border-radius: 7%;
+	font-size: 20px;
+	font-family: sans-serif;
+	color: #fff1f1;
+	box-sizing: border-box;
 }
 #butt_start {
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
 	top: 422px;
 	right: calc(50% - 240px);
-	z-index: 12; 
-	background: linear-gradient(165deg, #edd5cd, #fa5c18);
-	border: solid #855f3377 2px;
-	border-radius: 7%;
 	width: 100px;
 	height: 35px;
-	font-family: sans-serif ;
-	font-size: 20px;
-	color: #fff1f1;
-	box-sizing: border-box;
 }
 #butt_save_record {
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
 	top: 280px;
 	left: calc(50% - 60px);
-	z-index: 12; 
-	background: linear-gradient(165deg, #edd5cd, #fa5c18);
-	border: solid #855f3377 2px;
-	border-radius: 7%;
 	width: 120px;
 	height: 35px;
-	font-family: sans-serif ;
-	font-size: 20px;
-	color: #fff1f1;
-	box-sizing: border-box;
 }
 #butt-all-records {
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
 	top: 325px;
 	left: calc(50% - 60px);
-	z-index: 12; 
-	background: linear-gradient(165deg, #edd5cd, #fa5c18);
-	border: solid #855f3377 2px;
-	border-radius: 7%;
 	width: 120px;
 	height: 35px;
-	font-family: sans-serif ;
-	font-size: 20px;
-	color: #fff1f1;
-	box-sizing: border-box;
 }
 #user_name {
 	position: absolute;
