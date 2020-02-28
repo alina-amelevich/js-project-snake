@@ -25,7 +25,7 @@ body {
 	}
 	.global_container .game_container {
 		width: 490px;
-		top: 20px;
+		top: 0px;
 		height: auto;
 	}
 	
