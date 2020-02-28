@@ -19,7 +19,7 @@ body {
 	html body {
 		animation: none;
 		background: #edd5cd;
-		height: 800px;
+		height: 1500px;
 	}
 	canvas#background_controller {
 		display: none;
