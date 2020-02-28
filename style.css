@@ -19,15 +19,28 @@ body {
 	html body {
 		animation: none;
 		background: #edd5cd;
+		height: 800px;
 	}
 	canvas#background_controller {
 		display: none;
 	}
 	.global_container .game_container {
 		width: 490px;
-		top: 0px;
-		height: 500px;
+		top: 10px;
+		/* height: 500px; */
 	}
+	/* #butt_save_record {
+		top: 380px;
+	}
+	#butt-all-records {
+		top: 425px;
+	}
+	#user_name {
+		top: 320px;
+	} 
+	#label_save {
+		top: 160px;
+	} */
 	
 }
 
@@ -189,5 +202,5 @@ body {
 }
  /* Не забыть поменять на "none" */
 .hidden {
-	display: none; 
+	display: block; 
 }
