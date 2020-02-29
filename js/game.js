@@ -48,7 +48,6 @@ let score = 0; //счет
 
 //еда
 const foodArray = [ //массив со всеми картинками еды
-  '',
   'img/food1.png',
   'img/food2.png',
   'img/food3.png',
@@ -69,7 +68,7 @@ const foodArray = [ //массив со всеми картинками еды
 ];
 
 let foodImg = new Image(); 
-foodImg.src = foodArray[randomizer(1, foodArray.length)]; //рандомная еда
+foodImg.src = foodArray[randomizer(0, foodArray.length)]; //рандомная еда
 
 let food = { //рандомная генерация еды
   x: Math.floor(Math.random() * cell.amount.x) * cell.size,
@@ -271,15 +270,31 @@ function draw() {
   // console.log('рисование запущено');
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
 
-  if (isFoodChange) {
-    isFoodChange = false; //рандомная еда
-    foodImg.src = foodArray[randomizer(1, foodArray.length-1)];
+  //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
+  try {
+    if (isFoodChange) {
+      isFoodChange = false; //рандомная еда
+      foodImg.src = foodArray[randomizer(0, foodArray.length)];
+    }
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 1;
+    context.shadowOffsetY = 2;
+    context.shadowColor = '#be6c6a'; 
+    context.drawImage(foodImg, food.x, food.y); //рисование еды
   }
-  context.shadowBlur = 20;
-  context.shadowOffsetX = 1;
-  context.shadowOffsetY = 2;
-  context.shadowColor = '#be6c6a'; 
-  context.drawImage(foodImg, food.x, food.y); //рисование еды
+  catch (ex) {
+    console.error('возникло исключение типа: ' + ex.name);
+    isFoodChange = true;
+    if (isFoodChange) {
+      isFoodChange = false;
+      foodImg.src = foodArray[randomizer(0, foodArray.length)];
+    }
+    context.shadowBlur = 20;
+    context.shadowOffsetX = 1;
+    context.shadowOffsetY = 2;
+    context.shadowColor = '#be6c6a'; 
+    context.drawImage(foodImg, food.x, food.y);
+  }
 
   let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
   let snakeY = snake[0].y;
