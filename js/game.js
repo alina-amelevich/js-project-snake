@@ -367,25 +367,3 @@ function draw() {
 
 let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
 
-
-
-
-
-
-
-
-var stringName='amelevich_project_snake_2020';
-var rulevalue = document.querySelector('#needtoajax');
-console.log(rulevalue);
-(function() {
-  $.ajax( {
-    url : 'https://fe.it-academy.by/AjaxStringStorage2.php', type : 'POST', cache : false, dataType:'html',
-    data : { f : 'INSERT', n : stringName, v : rulevalue},
-    success : console.log('отправлено'), error : errorHandler
-    } );
-    
-    function errorHandler() {
-      console.log('не вышло!')
-    }
-
-})();
