@@ -367,3 +367,20 @@ function draw() {
 
 let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
 
+const rules = document.querySelector('#rules')
+let isRulesShow = false;
+function showRules() {
+  if (!isRulesShow) {
+    rules.style.visibility = 'visible';
+    rules.style.height = '532px';
+    isRulesShow = true;
+    return;
+  }
+  if (isRulesShow) {
+    rules.style.visibility = 'hidden';
+    rules.style.height = '0px';
+    isRulesShow = false;
+    return;
+  }
+
+}

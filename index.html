@@ -31,7 +31,7 @@
         <img src="img/black-32.png" id="score_img">
         <span id="score_value">0</span>
       </div>
-      <button type="button" id="butt_rules" class="btn">Правила</button>
+      <button type="button" id="butt_rules" class="btn" onclick="showRules()">Правила</button>
       <!-- <object id="dir-butt-object" data="img/method-draw-image.svg" type="image/svg+xml" width="1000px" heigth="404px"></object> -->
       <svg width="1000" height="404" xmlns="http://www.w3.org/2000/svg" id="dir-butt-object" class="inline_svg">
         <defs>
@@ -151,6 +151,7 @@
         color: rgb(70, 70, 70);
         box-sizing: border-box;
         width: 480px;
+        height: 0px;
         position: absolute;
         top: 600px;
         left: calc(50% - 240px);
@@ -158,7 +159,11 @@
         box-shadow: 10px 10px 7px lightgray;
         z-index: 20;
         opacity: 90%;
-        animation: name duration timing-function delay iteration-count direction fill-mode;
+        overflow: hidden;
+        visibility: hidden;
+        transition: height 1s;
+        
+        
       }
     </style>
     <div id="rules">
