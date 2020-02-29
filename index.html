@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Caveat:400,700&display=swap&subset=cyrillic" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
 <body>
   <div class="global_container">
+    
     <div class="game_container">
+      <h1>Snake game</h1>
       <canvas id="background_controller" width="1000px" heigth="404px"></canvas>
       <canvas id="game_field" width="480px" height="336px"></canvas> <!--20x14-->
       
@@ -51,7 +54,27 @@
           <stop offset="5%" stop-color="#edd5cd"/>
           <stop offset="100%" stop-color="#d19695"/>
          </linearGradient>
+
+         <filter id="inset-shadow">
+           <feOffset dx="0" dy="0"></feOffset>
+             <!-- Размытие тени -->
+             <feGaussianBlur stdDeviation="20" result="offset-blur"></feGaussianBlur>
+ 
+             <!-- Инвертируем drop shadow
+             чтобы создать внутреннюю тень -->
+             <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"></feComposite>
+ 
+             <!-- Цвет и Прозрачность -->
+             <feFlood flood-color="grey" flood-opacity="0.65" result="color"></feFlood>
+ 
+             <!-- Обрезаем цвет внутрь тени -->
+             <feComposite operator="in" in="color" in2="inverse" result="shadow"></feComposite>
+ 
+             <!-- Раcполагаем тень поверх элемента -->
+             <feComposite operator="over" in="shadow" in2="SourceGraphic"></feComposite>
+         </filter>
         </defs>
+
         <g> 
          <g id="up" class="dir-butt-elem">
            <path fill="url(#svg_30)" stroke-width="2" d="m856.48964,172.90983c15.60277,0 28.25,-12.64802 28.25,-28.25c0,-15.60202 -12.64723,-28.25001 -28.25,-28.25001c-15.60201,0 -28.25001,12.64799 -28.25001,28.25001c0,15.60198 12.648,28.25 28.25001,28.25zm4.53854,-47.15082l6.87338,6.87713l-12.02585,12.02516l12.02585,12.02588l-6.87338,6.87487l-18.8986,-18.90075l18.8986,-18.90229l0,0z" id="svg_7" transform="rotate(90 856.4896240234375,144.6598205566407) " stroke="url(#svg_31)"/>
@@ -75,7 +98,7 @@
        </svg>
 
 
-       <svg width="176" height="174" xmlns="http://www.w3.org/2000/svg" id="dir-butt-mobile" class="inline_svg">
+       <!-- <svg width="176" height="174" xmlns="http://www.w3.org/2000/svg" id="dir-butt-mobile" class="inline_svg">
         <defs>
          <linearGradient id="svg_20" x1="0.320313" y1="0" x2="0.785156" y2="1" spreadMethod="pad">
           <stop stop-color="#edd5cd" offset="5%"/>
@@ -99,9 +122,6 @@
          </linearGradient>
         </defs>
         <g>
-         <title>background</title>
-         <rect x="-1" y="-1" width="178" height="176" id="canvas_background" fill="none"/>
-        </g>
        
        <g id="mob-up" class="dir-butt-elem">
          <path stroke="url(#svg_31)" transform="rotate(90 87.48962402343751,31.659820556640632) " id="svg_7" d="m87.48964,59.90983c15.60277,0 28.25,-12.64802 28.25,-28.25c0,-15.60202 -12.64723,-28.25001 -28.25,-28.25001c-15.60201,0 -28.25001,12.64799 -28.25001,28.25001c0,15.60198 12.648,28.25 28.25001,28.25zm4.53854,-47.15082l6.87338,6.87713l-12.02585,12.02516l12.02585,12.02588l-6.87338,6.87487l-18.8986,-18.90075l18.8986,-18.90229l0,0z" stroke-width="2" fill="url(#svg_30)"/>
@@ -120,7 +140,7 @@
          <path fill="#edd5cd" stroke-width="0" d="m43.64094,75.26781l-12.25031,12.24957l12.25031,12.24957l-7.00093,7.00467l-19.25121,-19.25423l19.25121,-19.25571" id="svg_3" stroke="#edd5cd"/>
        </g>
        
-       </svg>
+       </svg> -->
     </div>
   </div>
 <script src="js/game.js"></script>
