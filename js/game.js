@@ -219,9 +219,9 @@ function mouseDirLeft(EO) {
     for(let i = 0; i < snake.length; i++) {
       context.beginPath();
       context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-      context.shadowBlur = 5;
+      context.shadowBlur = 4;
       context.shadowOffsetX = 0;
-      context.shadowOffsetY = 1; 
+      context.shadowOffsetY = 3; 
       context.shadowColor = '#48577894'; 
       context.moveTo(snake[i].x + cell.quarter, snake[i].y);
       context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);

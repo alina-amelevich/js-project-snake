@@ -31,6 +31,7 @@
         <img src="img/black-32.png" id="score_img">
         <span id="score_value">0</span>
       </div>
+      <button type="button" id="butt_rules" class="btn">Правила</button>
       <!-- <object id="dir-butt-object" data="img/method-draw-image.svg" type="image/svg+xml" width="1000px" heigth="404px"></object> -->
       <svg width="1000" height="404" xmlns="http://www.w3.org/2000/svg" id="dir-butt-object" class="inline_svg">
         <defs>
@@ -59,17 +60,13 @@
            <feOffset dx="0" dy="0"></feOffset>
              <!-- Размытие тени -->
              <feGaussianBlur stdDeviation="20" result="offset-blur"></feGaussianBlur>
- 
              <!-- Инвертируем drop shadow
              чтобы создать внутреннюю тень -->
              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"></feComposite>
- 
              <!-- Цвет и Прозрачность -->
-             <feFlood flood-color="grey" flood-opacity="0.65" result="color"></feFlood>
- 
+             <feFlood flood-color="gray" flood-opacity="0.65" result="color"></feFlood>
              <!-- Обрезаем цвет внутрь тени -->
              <feComposite operator="in" in="color" in2="inverse" result="shadow"></feComposite>
- 
              <!-- Раcполагаем тень поверх элемента -->
              <feComposite operator="over" in="shadow" in2="SourceGraphic"></feComposite>
          </filter>

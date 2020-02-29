@@ -47,6 +47,7 @@ h1 {
 	font-family: sans-serif;
 	font-size: 50px;
 	color: #7189bf;
+	text-shadow: 3px 3px 2px lightgray;
 }
 .global_container {
 	position: relative;
@@ -114,7 +115,7 @@ h1 {
 	z-index: 12; 
 	background: linear-gradient(165deg, #edd5cd, #fa5c18);
 	border: solid #855f3377 2px;
-	border-radius: 7%;
+	border-radius: 5px;
 	font-size: 20px;
 	font-family: sans-serif;
 	color: #fff1f1;
@@ -126,6 +127,13 @@ h1 {
 	width: 100px;
 	height: 35px;
 }
+#butt_rules {
+	top: 422px;
+	left: calc(50% - 60px);
+	width: 120px;
+	height: 35px;
+}
+
 #butt_save_record {
 	top: 280px;
 	left: calc(50% - 60px);
