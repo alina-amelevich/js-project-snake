@@ -50,6 +50,7 @@ h1 {
 }
 .global_container {
 	position: relative;
+	height: 1500px;
 }
 .game_container {
 	margin-left: auto;

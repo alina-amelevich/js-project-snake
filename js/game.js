@@ -4,17 +4,12 @@
 //и кладем их в переменные
 
 const upSvg = document.querySelector('#up');
-console.log(upSvg);
-upSvg.addEventListener('click', mouseDirUp);
 
 const rightSvg = document.querySelector('#right');
-rightSvg.addEventListener('click', mouseDirRight);
 
 const downSvg = document.querySelector('#down');
-downSvg.addEventListener('click', mouseDirDown);
 
 const leftSvg = document.querySelector('#left');
-leftSvg.addEventListener('click', mouseDirLeft);
 
 //когда кликнута svg-стрелка вверх
 function mouseDirUp(EO) {
@@ -23,7 +18,7 @@ function mouseDirUp(EO) {
   if (dir != 'down') {
     dir = 'up';
   }
-  console.log('EO.target: ', EO.target);
+  // console.log('EO.target: ', EO.target);
   return;
 }
 //когда кликнута svg-стрелка вправо
@@ -33,7 +28,7 @@ function mouseDirRight(EO) {
   if (dir != 'left') {
     dir = 'right';
   }
-  console.log('EO.target: ', EO.target);
+  // console.log('EO.target: ', EO.target);
 }
 //когда кликнута svg-стрелка вниз
 function mouseDirDown(EO) {
@@ -42,7 +37,7 @@ function mouseDirDown(EO) {
   if (dir != 'up') {
     dir = 'down';
   }
-  console.log('EO.target: ', EO.target);
+  // console.log('EO.target: ', EO.target);
 }
 //когда кликнута svg-стрелка влево
 function mouseDirLeft(EO) {
@@ -51,8 +46,11 @@ function mouseDirLeft(EO) {
   if (dir != 'right') {
     dir = 'left';
   }
-  console.log('EO.target: ', EO.target);
+  // console.log('EO.target: ', EO.target);
 }
+
+const buttStart = document.querySelector('#butt_start');
+buttStart.addEventListener('click', newGame);
 
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
@@ -83,7 +81,7 @@ const cell = {
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
-let gameover = false;
+// let gameover = true;
 const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
@@ -118,8 +116,8 @@ let food = { //рандомная генерация еды
   x: Math.floor(Math.random() * cell.amount.x) * cell.size,
   y: Math.floor(Math.random() * cell.amount.y) * cell.size
 };
-console.log('Еда сейчас по оси X: ', food.x);
-console.log('Еда сейчас по оси Y: ', food.y);
+// console.log('Еда сейчас по оси X: ', food.x);
+// console.log('Еда сейчас по оси Y: ', food.y);
 
 let isFoodChange = false; //указывается, если еда требует перегенерации
 
@@ -131,98 +129,104 @@ snake[0] = {
   y: cell.center.y * cell.size
 };
 
-document.addEventListener('keydown', changeDirection);
-
-
 
 function randomizer (a, b) { //a:нижняя граница диапазона, b:верхняя
   return Math.floor(
     Math.random() * (b - a + 1)
-  ) + a;
-}
-
-
-let dir; //Направление движения
-//Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
-function changeDirection(EO) { 
-  EO = EO || window.event;
-  // EO.preventDefault();
+    ) + a;
+  }
   
-  if (EO.keyCode === 37 && dir !== 'right') {
-    dir = 'left';
-    console.log('нажата стрелка вправо');
-  } 
-  else if (EO.keyCode === 38 && dir !== 'down') {
-    dir = 'up';
-  console.log('нажата стрелка вниз');
-  } 
-  else if (EO.keyCode === 39 && dir !== 'left') {
-    dir = 'right';
-    console.log('нажата стрелка влево');
-  } 
-  else if (EO.keyCode === 40 && dir !== 'up') {
-    dir = 'down';
-    console.log('нажата стрелка вверх');
+  let dir; //Направление движения
+  //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
+  function changeDirection(EO) { 
+    EO = EO || window.event;
+    // EO.preventDefault();
+    
+    if (EO.keyCode === 37 && dir !== 'right') {
+      dir = 'left';
+      console.log('нажата стрелка вправо');
+    } 
+    else if (EO.keyCode === 38 && dir !== 'down') {
+      dir = 'up';
+      console.log('нажата стрелка вниз');
+    } 
+    else if (EO.keyCode === 39 && dir !== 'left') {
+      dir = 'right';
+      console.log('нажата стрелка влево');
+    } 
+    else if (EO.keyCode === 40 && dir !== 'up') {
+      dir = 'down';
+      console.log('нажата стрелка вверх');
+    }
   }
-}
-
-//Ф-ция прохождения через стены
-function throughWall(snakeX, snakeY) {
-  if (snakeX < 0) {
-    console.log('дошла до стенки');
-    snakeX = fieldSize.x - cell.size;
-    console.log('прошла через стенку');
-  } 
-  else if (snakeX > (fieldSize.x - cell.size)) {
-    console.log('дошла до стенки');
-    snakeX = 0;
-    console.log('прошла через стенку');
-  } 
-  if (snakeY < 0) {
-    console.log('дошла до стенки');
-    snakeY = fieldSize.y - cell.size;
-    console.log('прошла через стенку');
-  } 
-  else if (snakeY > (fieldSize.y - cell.size)) {
-    console.log('дошла до стенки');
-    snakeY = 0;
-    console.log('прошла через стенку');
+  
+  //Ф-ция прохождения через стены
+  function throughWall(snakeX, snakeY) {
+    if (snakeX < 0) {
+      console.log('дошла до стенки');
+      snakeX = fieldSize.x - cell.size;
+      console.log('прошла через стенку');
+    } 
+    else if (snakeX > (fieldSize.x - cell.size)) {
+      console.log('дошла до стенки');
+      snakeX = 0;
+      console.log('прошла через стенку');
+    } 
+    if (snakeY < 0) {
+      console.log('дошла до стенки');
+      snakeY = fieldSize.y - cell.size;
+      console.log('прошла через стенку');
+    } 
+    else if (snakeY > (fieldSize.y - cell.size)) {
+      console.log('дошла до стенки');
+      snakeY = 0;
+      console.log('прошла через стенку');
+    }
+    
+    return {
+      x: snakeX, 
+      y: snakeY
+    };
+  }
+  
+  //Рисование змеи
+  function drawSnake() {
+    for(let i = 0; i < snake.length; i++) {
+      context.beginPath();
+      context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
+      context.shadowBlur = 5;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 1; 
+      context.shadowColor = '#48577894'; 
+      context.moveTo(snake[i].x + cell.quarter, snake[i].y);
+      context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
+      context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
+      context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
+      context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
+      context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
+      context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
+      context.lineTo(snake[i].x, snake[i].y + cell.quarter);
+      context.fill();
+      // console.log('нарисован 1 сегмент змейки');
+    }
   }
 
-   return {
-    x: snakeX, 
-    y: snakeY
-  };
-}
-
-//Рисование змеи
-function drawSnake() {
-  for(let i = 0; i < snake.length; i++) {
-    context.beginPath();
-    context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-    context.shadowBlur = 5;
-    context.shadowOffsetX = 0;
-    context.shadowOffsetY = 1; 
-    context.shadowColor = '#48577894'; 
-    context.moveTo(snake[i].x + cell.quarter, snake[i].y);
-    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
-    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
-    context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
-    context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
-    context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
-    context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
-    context.lineTo(snake[i].x, snake[i].y + cell.quarter);
-    context.fill();
-    // console.log('нарисован 1 сегмент змейки');
+  document.addEventListener('keydown', changeDirection);
+  upSvg.addEventListener('click', mouseDirUp);
+  rightSvg.addEventListener('click', mouseDirRight);
+  downSvg.addEventListener('click', mouseDirDown);
+  leftSvg.addEventListener('click', mouseDirLeft);
+  
+  function newGame() {
+    // gameover = false;
+    document.location.reload();
   }
-}
-
 // Проигрыш
 function gameOver() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
   // document.location.reload();
   clearInterval(game);
-
+  // gameover = true;
   //if (score > ..)
   showHiddenRecord();
   //else showHiddenLose() прописать ф-цию и сделать dom-елемент
@@ -235,15 +239,10 @@ function showHiddenRecord() {
   finalScore.textContent = score;
 }
 
-function newGame() {
-  document.location.reload();
-}
 
 function draw() {
   // console.log('рисование запущено');
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
-
-  //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
 
   if (isFoodChange) {
     isFoodChange = false; //рандомная еда
@@ -280,11 +279,11 @@ function draw() {
   if (snakeX < 0 || snakeX > (fieldSize.x - cell.size)
   || snakeY < 0 || snakeY > (fieldSize.y - cell.size)) 
   {
-    console.log('было snakeX: ', snakeX, '\n было snakeY: ', snakeY);
+    // console.log('было snakeX: ', snakeX, '\n было snakeY: ', snakeY);
     afterWallPos = throughWall(snakeX, snakeY);
     snakeX = afterWallPos.x;
     snakeY = afterWallPos.y;
-    console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
+    // console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
   }
 
   //Запуск рисования змеи
@@ -314,7 +313,7 @@ function draw() {
   
     for(let i = 0; i < snake.length; i++) {
       if (newHead.x === snake[i].x && newHead.y === snake[i].y ) {
-        console.log('хвост съеден');
+        // console.log('хвост съеден');
         gameOver();
       }
     }
@@ -325,22 +324,3 @@ function draw() {
 
 let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
 
-
-if (gameover == true) {
-  console.log('проигрыш')
-  alert('Game over');
-}
-
-
-class Snake {
-  constructor() {
-    this.color = 'yellow';
-    this.lgth = 200; //нач. длина хвоста змеи (width)
-    this.fat = 20; //толщина змеи (heigth)
-    this.speed = 4; //скорость движения змеи
-    this.head = {}; //голова змеи
-    this.dir = 3; //Направл-е движ. змеи: 1-влево, 2-вверх 3-вправо, 4-вниз
-  }
-  // animate() {
-    // }
-}
