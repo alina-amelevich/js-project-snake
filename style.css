@@ -28,7 +28,7 @@ body {
 		top: 10px;
 		height: 1024px;
 	}
-	object.dir-butt {
+	svg#dir-butt-object {
 		display: none;
 	}
 }
