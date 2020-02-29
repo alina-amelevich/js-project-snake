@@ -20,29 +20,38 @@ leftSvg.addEventListener('click', mouseDirLeft);
 function mouseDirUp(EO) {
   EO = EO || window.event;
   EO.preventDefault();
-  dir = 'up';
-  console.log('EO.target: ', EO.target)
+  if (dir != 'down') {
+    dir = 'up';
+  }
+  console.log('EO.target: ', EO.target);
+  return;
 }
 //когда кликнута svg-стрелка вправо
 function mouseDirRight(EO) {
   EO = EO || window.event;
   EO.preventDefault();
-  dir = 'right';
-  console.log('EO.target: ', EO.target)
+  if (dir != 'left') {
+    dir = 'right';
+  }
+  console.log('EO.target: ', EO.target);
 }
 //когда кликнута svg-стрелка вниз
 function mouseDirDown(EO) {
   EO = EO || window.event;
   EO.preventDefault();
-  dir = 'down';
-  console.log('EO.target: ', EO.target)
+  if (dir != 'up') {
+    dir = 'down';
+  }
+  console.log('EO.target: ', EO.target);
 }
 //когда кликнута svg-стрелка влево
 function mouseDirLeft(EO) {
   EO = EO || window.event;
   EO.preventDefault();
-  dir = 'left';
-  console.log('EO.target: ', EO.target)
+  if (dir != 'right') {
+    dir = 'left';
+  }
+  console.log('EO.target: ', EO.target);
 }
 
 const backCanvas = document.querySelector('#background_controller');
@@ -235,30 +244,16 @@ function draw() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
 
   //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
-  try {
-    if (isFoodChange) {
-      isFoodChange = false; //рандомная еда
-      foodImg.src = foodArray[randomizer(1, foodArray.length)];
-    }
-    context.shadowBlur = 20;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 2;
-    context.shadowColor = '#be6c6a'; 
-    context.drawImage(foodImg, food.x, food.y); //рисование еды
+
+  if (isFoodChange) {
+    isFoodChange = false; //рандомная еда
+    foodImg.src = foodArray[randomizer(1, foodArray.length-1)];
   }
-  catch (ex) {
-    console.error('возникло исключение типа: ' + ex.name);
-    isFoodChange = true;
-    if (isFoodChange) {
-      isFoodChange = false; //рандомная еда
-      foodImg.src = foodArray[randomizer(1, foodArray.length)];
-    }
-    context.shadowBlur = 20;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 2;
-    context.shadowColor = '#be6c6a'; 
-    context.drawImage(foodImg, food.x, food.y); //рисование еды
-  }
+  context.shadowBlur = 20;
+  context.shadowOffsetX = 1;
+  context.shadowOffsetY = 2;
+  context.shadowColor = '#be6c6a'; 
+  context.drawImage(foodImg, food.x, food.y); //рисование еды
 
   let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
   let snakeY = snake[0].y;

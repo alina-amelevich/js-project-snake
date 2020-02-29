@@ -31,6 +31,9 @@ body {
 	svg#dir-butt-object {
 		display: none;
 	}
+	/* svg#dir-butt-mobile {
+		display: block;
+	} */
 }
 
 .global_container {
@@ -176,6 +179,17 @@ body {
 	display: block;
 }
 
-.dir-butt-elem:hover {
-
+#dir-butt-mobile {
+	/* margin-left: auto;
+	margin-right: auto; */
+	position: absolute;
+	width: 176px;
+	height: 174px;
+	left: calc(50% - 87px);
+	top: 432px;
+	z-index: 13;
+	display: block;
 }
+/* .dir-butt-elem:hover {
+
+} */
