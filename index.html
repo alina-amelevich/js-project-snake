@@ -24,7 +24,7 @@
           Введите свое имя и нажмите "Сохранить".
         </label>
         <input type="text" id="user_name" name="user_name">
-        <button type="button" id="butt_save_record" class="btn">Сохранить</button>
+        <button type="button" id="butt_save_record" class="btn" onclick="addRecord()">Сохранить</button>
         <button type="button" id="butt-all-records" class="btn">Рекорды</button>
       </div>
       <div class="score_container">
@@ -140,6 +140,46 @@
        </svg> -->
     </div>
   </div>
+  <div id="needtoajax">
+    <style>
+      #rules {
+        background:  #edd5cd;
+        border: solid #855f3377 2px;
+        border-radius: 6px;
+        font-family: sans-serif ;
+        font-size: 20px;
+        color: rgb(70, 70, 70);
+        box-sizing: border-box;
+        width: 480px;
+        position: absolute;
+        top: 600px;
+        left: calc(50% - 240px);
+        padding: 20px;
+        box-shadow: 10px 10px 7px lightgray;
+        z-index: 20;
+        opacity: 90%;
+      }
+    </style>
+    <div id="rules">
+      <p style="text-align: center; font-weight: bold;">
+        Правила игры очень просты:)
+      </p>
+      <p>
+        Накормите змейку и постарайтесь продержаться как можно дольше, не врезаясь в хвост.
+      </p>
+      <p>
+        Вы управляете направлением движения головы змейки, а ее хвост движется следом. Вы не можете остановить движение. 
+        Каждый раз, когда змейка съедает кусок пищи, она становится длиннее, что постепенно усложняет игру. 
+      </p>
+      <p>
+        Чтобы привести змейку в движение или изменить направление движения, нажмите одну из клавиш со стрелками на клавиатуре или щелкните мышью по одной из кнопок со стрелками.
+      </p>
+      <p style="text-align: center;">
+        Удачи!
+      </p>
+    </div>
+  </div>
+  <script src="http://fe.it-academy.by/JQ/jquery.js"></script>
 <script src="js/game.js"></script>
 </body>
 </html>
