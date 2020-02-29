@@ -2,52 +2,11 @@
 
 //Получаем кнопки изменения направления из svg 
 //и кладем их в переменные
-
 const upSvg = document.querySelector('#up');
-
 const rightSvg = document.querySelector('#right');
-
 const downSvg = document.querySelector('#down');
-
 const leftSvg = document.querySelector('#left');
 
-//когда кликнута svg-стрелка вверх
-function mouseDirUp(EO) {
-  EO = EO || window.event;
-  EO.preventDefault();
-  if (dir != 'down') {
-    dir = 'up';
-  }
-  // console.log('EO.target: ', EO.target);
-  return;
-}
-//когда кликнута svg-стрелка вправо
-function mouseDirRight(EO) {
-  EO = EO || window.event;
-  EO.preventDefault();
-  if (dir != 'left') {
-    dir = 'right';
-  }
-  // console.log('EO.target: ', EO.target);
-}
-//когда кликнута svg-стрелка вниз
-function mouseDirDown(EO) {
-  EO = EO || window.event;
-  EO.preventDefault();
-  if (dir != 'up') {
-    dir = 'down';
-  }
-  // console.log('EO.target: ', EO.target);
-}
-//когда кликнута svg-стрелка влево
-function mouseDirLeft(EO) {
-  EO = EO || window.event;
-  EO.preventDefault();
-  if (dir != 'right') {
-    dir = 'left';
-  }
-  // console.log('EO.target: ', EO.target);
-}
 
 const buttStart = document.querySelector('#butt_start');
 buttStart.addEventListener('click', newGame);
@@ -129,18 +88,85 @@ snake[0] = {
   y: cell.center.y * cell.size
 };
 
+let isAudioinit = false;
+//Создаем объекты Audio
+const audioGameOver = new Audio('sound/gameover.mp3');
+const audioEat = new Audio('sound/eat.mp3');
+const audioBump = new Audio('sound/pop.mp3');
+function soundInit() {
+  isAudioinit = true;
+  audioGameOver.play();
+  audioGameOver.pause(); 
+  audioEat.play();
+  audioEat.pause(); 
+  audioBump.play();
+  audioBump.pause(); 
+}
+
+function soundEat() {
+  audioEat.currentTime=0.5;
+  audioEat.play();
+}
+function soundBump() {
+  audioBump.currentTime=0.5;
+  audioBump.play();
+}
+function soundGameOver() {
+  audioGameOver.currentTime=0;
+  audioGameOver.play();
+}
 
 function randomizer (a, b) { //a:нижняя граница диапазона, b:верхняя
   return Math.floor(
     Math.random() * (b - a + 1)
     ) + a;
   }
-  
+
   let dir; //Направление движения
+  //когда кликнута svg-стрелка вверх
+function mouseDirUp(EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
+  if (dir != 'down') {
+    dir = 'up';
+  }
+  // console.log('EO.target: ', EO.target);
+  return;
+}
+//когда кликнута svg-стрелка вправо
+function mouseDirRight(EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
+  if (dir != 'left') {
+    dir = 'right';
+  }
+  // console.log('EO.target: ', EO.target);
+}
+//когда кликнута svg-стрелка вниз
+function mouseDirDown(EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
+  if (dir != 'up') {
+    dir = 'down';
+  }
+  // console.log('EO.target: ', EO.target);
+}
+//когда кликнута svg-стрелка влево
+function mouseDirLeft(EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
+  if (dir != 'right') {
+    dir = 'left';
+  }
+  // console.log('EO.target: ', EO.target);
+}
   //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
   function changeDirection(EO) { 
     EO = EO || window.event;
     // EO.preventDefault();
+    if (isAudioinit === false) {
+      soundInit();
+    }
     
     if (EO.keyCode === 37 && dir !== 'right') {
       dir = 'left';
@@ -237,6 +263,7 @@ function showHiddenRecord() {
   recordText.style.display = "block";
   const finalScore = document.querySelector('#final_score');
   finalScore.textContent = score;
+  soundGameOver();
 }
 
 
@@ -292,6 +319,7 @@ function draw() {
   //Как змея кушает
   if (snakeX == food.x && snakeY == food.y) {
     score++;
+    soundEat();
     scoreSpan.textContent = score;
     setTimeout(changeFood, 0);
     function changeFood() {
@@ -314,7 +342,7 @@ function draw() {
     for(let i = 0; i < snake.length; i++) {
       if (newHead.x === snake[i].x && newHead.y === snake[i].y ) {
         // console.log('хвост съеден');
-        gameOver();
+        setTimeout(gameOver, 100);
       }
     }
   

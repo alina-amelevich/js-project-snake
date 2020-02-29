@@ -1,6 +1,6 @@
 body {
 	background: linear-gradient(-45deg, #ffbeae, #7188bfa1, #edd5cd,  #ffd781ce);
-	background-size: 400% 400%;
+	background-size: 600% 600%;
 	animation: gradient 30s ease infinite;
 }
 @keyframes gradient {
@@ -50,7 +50,6 @@ h1 {
 }
 .global_container {
 	position: relative;
-	height: 1500px;
 }
 .game_container {
 	margin-left: auto;
@@ -178,7 +177,7 @@ h1 {
 }
  /* Не забыть поменять на "none" */
 .hidden {
-	display: block; 
+	display: none; 
 }
 
 #dir-butt-object {
