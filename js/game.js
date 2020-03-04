@@ -40,7 +40,7 @@ const cell = {
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
-// let gameover = true;
+let isGameOver = false;
 const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
@@ -80,6 +80,9 @@ let food = { //рандомная генерация еды
 let isFoodChange = false; //указывается, если еда требует перегенерации
 
 let snake = [];
+
+//Скорость змейки (на столько пикселей она сдвигается за один кадр)
+const speed = cell.size / 6;
 
 //Первоначальные координаты змеи
 snake[0] = {
@@ -140,6 +143,7 @@ function mouseDirRight(EO) {
     dir = 'right';
   }
   // console.log('EO.target: ', EO.target);
+  return;
 }
 //когда кликнута svg-стрелка вниз
 function mouseDirDown(EO) {
@@ -149,6 +153,7 @@ function mouseDirDown(EO) {
     dir = 'down';
   }
   // console.log('EO.target: ', EO.target);
+  return;
 }
 //когда кликнута svg-стрелка влево
 function mouseDirLeft(EO) {
@@ -158,7 +163,11 @@ function mouseDirLeft(EO) {
     dir = 'left';
   }
   // console.log('EO.target: ', EO.target);
+  return;
+  
 }
+
+let nextDir;
   //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
   function changeDirection(EO) { 
     EO = EO || window.event;
@@ -166,21 +175,21 @@ function mouseDirLeft(EO) {
     if (isAudioinit === false) {
       soundInit();
     }
-    
+  
     if (EO.keyCode === 37 && dir !== 'right') {
-      dir = 'left';
+      nextDir = 'left';
       console.log('нажата стрелка вправо');
     } 
     else if (EO.keyCode === 38 && dir !== 'down') {
-      dir = 'up';
+      nextDir = 'up';
       console.log('нажата стрелка вниз');
     } 
     else if (EO.keyCode === 39 && dir !== 'left') {
-      dir = 'right';
+      nextDir = 'right';
       console.log('нажата стрелка влево');
     } 
     else if (EO.keyCode === 40 && dir !== 'up') {
-      dir = 'down';
+      nextDir = 'down';
       console.log('нажата стрелка вверх');
     }
   }
@@ -189,7 +198,7 @@ function mouseDirLeft(EO) {
   function throughWall(snakeX, snakeY) {
     if (snakeX < 0) {
       console.log('дошла до стенки');
-      snakeX = fieldSize.x - cell.size;
+      snakeX = fieldSize.x - (cell.size);
       console.log('прошла через стенку');
     } 
     else if (snakeX > (fieldSize.x - cell.size)) {
@@ -207,30 +216,33 @@ function mouseDirLeft(EO) {
       snakeY = 0;
       console.log('прошла через стенку');
     }
-    
     return {
-      x: snakeX, 
+      x: snakeX,
       y: snakeY
     };
   }
-  
+
   //Рисование змеи
   function drawSnake() {
-    for(let i = 0; i < snake.length; i++) {
+    for (let i = 0; i < snake.length; i++) {
       context.beginPath();
       context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
       context.shadowBlur = 4;
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 3; 
       context.shadowColor = '#48577894'; 
-      context.moveTo(snake[i].x + cell.quarter, snake[i].y);
-      context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
-      context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
-      context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
-      context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
-      context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
-      context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
-      context.lineTo(snake[i].x, snake[i].y + cell.quarter);
+      // if (i == 0) {
+        context.moveTo(snake[i].x + cell.quarter, snake[i].y);
+        context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
+        context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
+        context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
+        context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
+        context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
+        context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
+        context.lineTo(snake[i].x, snake[i].y + cell.quarter);
+      // } else /* if ( snake[i].x % cell.size == 0 || snake[i]. % cell.size == 0)*/ {
+      //   context.fillRect ((snake[i].x + cell.size - speed), snake[i].y, speed, cell.size);
+      // }
       context.fill();
       // console.log('нарисован 1 сегмент змейки');
     }
@@ -241,22 +253,22 @@ function mouseDirLeft(EO) {
   rightSvg.addEventListener('click', mouseDirRight);
   downSvg.addEventListener('click', mouseDirDown);
   leftSvg.addEventListener('click', mouseDirLeft);
-  
+
   function newGame() {
-    // gameover = false;
+    isGameOver = false;
     document.location.reload();
   }
 // Проигрыш
 function gameOver() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
   // document.location.reload();
-  clearInterval(game);
-  // gameover = true;
+  isGameOver = true;
   //if (score > ..)
   showHiddenRecord();
   //else showHiddenLose() прописать ф-цию и сделать dom-елемент
 }
 
+//Показывает текст и кнопки после game over
 function showHiddenRecord() {
   const recordText = document.querySelector('.hidden');
   recordText.style.display = "block";
@@ -300,18 +312,26 @@ function draw() {
   let snakeY = snake[0].y;
   
   //Движение змеи
-  
+  if (snakeX % cell.size === 0 && (nextDir == 'up' || nextDir == 'down')) {
+    dir = nextDir;
+    nextDir = '';
+  } else if (snakeY % cell.size === 0 && (nextDir == 'right' || nextDir == 'left')) {
+    dir = nextDir;
+    nextDir = '';
+  }
+
+
   if (dir == 'left') { 
-    snakeX -= cell.size;
+    snakeX -= speed;
   }
   else if (dir == 'up') {
-    snakeY -= cell.size;
+    snakeY -= speed;
   }
   else if (dir == 'right') {
-    snakeX += cell.size;
+    snakeX += speed;
   }
   else if (dir == 'down') {
-    snakeY += cell.size;
+    snakeY += speed;
   }
   
   //Переменная для хрананения позиции змейки после прохождения через стену
@@ -363,10 +383,15 @@ function draw() {
   
   //Добавляем элемент 'голова' в массив змеи
   snake.unshift(newHead); 
+
+  if (!isGameOver) {
+    requestAnimationFrame(draw);
+  }
 }
 
-let game = setInterval(draw, 110); //запускаем таймер, который будет рисовать игру
+requestAnimationFrame(draw); //запускаем таймер, который будет рисовать игру
 
+//Вывлывающиее правила
 const rules = document.querySelector('#rules')
 let isRulesShow = false;
 function showRules() {
