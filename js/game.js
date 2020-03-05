@@ -68,7 +68,7 @@ const foodArray = [ //массив со всеми картинками еды
 ];
 
 let foodImg = new Image(); 
-foodImg.src = foodArray[randomizer(0, foodArray.length)]; //рандомная еда
+foodImg.src = foodArray[randomizer(0, foodArray.length - 1)]; //рандомная еда
 
 let food = { //рандомная генерация еды
   x: Math.floor(Math.random() * cell.amount.x) * cell.size,
@@ -80,6 +80,8 @@ let food = { //рандомная генерация еды
 let isFoodChange = false; //указывается, если еда требует перегенерации
 
 let snake = [];
+let segmentCount = 16; //
+
 
 //Скорость змейки (на столько пикселей она сдвигается за один кадр)
 const speed = cell.size / 6;
@@ -89,6 +91,14 @@ snake[0] = {
   x: cell.center.x * cell.size,
   y: cell.center.y * cell.size
 };
+
+// let partyMode = false; 
+//режим вечеринки
+const partyCheckBox = document.querySelector('#party-checkbox');
+
+// function party() {
+//   partyMode = true;
+// }
 
 let isAudioinit = false;
 //Создаем объекты Audio
@@ -124,13 +134,17 @@ function randomizer (a, b) { //a:нижняя граница диапазона,
     ) + a;
   }
 
+  function randomColor() {
+    return '#' + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16));
+  }
+
   let dir; //Направление движения
   //когда кликнута svg-стрелка вверх
 function mouseDirUp(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'down') {
-    dir = 'up';
+    nextDir = 'up';
   }
   // console.log('EO.target: ', EO.target);
   return;
@@ -140,7 +154,7 @@ function mouseDirRight(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'left') {
-    dir = 'right';
+    nextDir = 'right';
   }
   // console.log('EO.target: ', EO.target);
   return;
@@ -150,7 +164,7 @@ function mouseDirDown(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'up') {
-    dir = 'down';
+    nextDir = 'down';
   }
   // console.log('EO.target: ', EO.target);
   return;
@@ -160,7 +174,7 @@ function mouseDirLeft(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'right') {
-    dir = 'left';
+    nextDir = 'left';
   }
   // console.log('EO.target: ', EO.target);
   return;
@@ -224,25 +238,17 @@ let nextDir;
 
   //Рисование змеи
   function drawSnake() {
-    for (let i = 0; i < snake.length; i++) {
+    for (let i = snake.length -1; i >= 0; i--) {
       context.beginPath();
-      context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-      context.shadowBlur = 4;
+      if (partyCheckBox.checked) {
+        context.fillStyle = (i == 0) ? '#52638b' : randomColor();
+      } else {
+        context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
+      }
+      context.shadowBlur = 0;
       context.shadowOffsetX = 0;
-      context.shadowOffsetY = 3; 
-      context.shadowColor = '#48577894'; 
-      // if (i == 0) {
-        context.moveTo(snake[i].x + cell.quarter, snake[i].y);
-        context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y);
-        context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter);
-        context.lineTo(snake[i].x + cell.size, snake[i].y + cell.quarter * 3);
-        context.lineTo(snake[i].x + cell.quarter * 3, snake[i].y + cell.size);
-        context.lineTo(snake[i].x + cell.quarter, snake[i].y + cell.size);
-        context.lineTo(snake[i].x, snake[i].y + cell.quarter * 3);
-        context.lineTo(snake[i].x, snake[i].y + cell.quarter);
-      // } else /* if ( snake[i].x % cell.size == 0 || snake[i]. % cell.size == 0)*/ {
-      //   context.fillRect ((snake[i].x + cell.size - speed), snake[i].y, speed, cell.size);
-      // }
+      context.shadowOffsetY = 0; 
+      context.arc(snake[i].x + cell.quarter * 2, snake[i].y + cell.quarter * 2, cell.quarter * 2, 0, Math.PI*2, false);
       context.fill();
       // console.log('нарисован 1 сегмент змейки');
     }
@@ -282,11 +288,12 @@ function draw() {
   // console.log('рисование запущено');
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
 
+
   //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
   try {
     if (isFoodChange) {
       isFoodChange = false; //рандомная еда
-      foodImg.src = foodArray[randomizer(0, foodArray.length)];
+      foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
     }
     context.shadowBlur = 20;
     context.shadowOffsetX = 1;
@@ -299,7 +306,7 @@ function draw() {
     isFoodChange = true;
     if (isFoodChange) {
       isFoodChange = false;
-      foodImg.src = foodArray[randomizer(0, foodArray.length)];
+      foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
     }
     context.shadowBlur = 20;
     context.shadowOffsetX = 1;
@@ -364,7 +371,8 @@ function draw() {
       x: Math.floor(Math.random() * cell.amount.x) * cell.size,
       y: Math.floor(Math.random() * cell.amount.y) * cell.size
     };
-  } else {
+    segmentCount += 8;
+  } else if (!dir || snake.length > segmentCount) {
     snake.pop(); //Удаляем последний эл-т массива змеи
   }
 
