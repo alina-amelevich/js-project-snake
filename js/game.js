@@ -40,7 +40,7 @@ const cell = {
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
-let isGameOver = false;
+// let isGameOver = false; // для RequestAnimationFrame
 const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
@@ -261,14 +261,15 @@ let nextDir;
   leftSvg.addEventListener('click', mouseDirLeft);
 
   function newGame() {
-    isGameOver = false;
+    // isGameOver = false; // для RequestAnimationFrame
     document.location.reload();
   }
 // Проигрыш
 function gameOver() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
   // document.location.reload();
-  isGameOver = true;
+  // isGameOver = true; // для RequestAnimationFrame
+  clearInterval(game);
   //if (score > ..)
   showHiddenRecord();
   //else showHiddenLose() прописать ф-цию и сделать dom-елемент
@@ -392,12 +393,13 @@ function draw() {
   //Добавляем элемент 'голова' в массив змеи
   snake.unshift(newHead); 
 
-  if (!isGameOver) {
-    requestAnimationFrame(draw);
-  }
+  // if (!isGameOver) {
+  //   requestAnimationFrame(draw);
+  // }
 }
 
-requestAnimationFrame(draw); //запускаем таймер, который будет рисовать игру
+let game = setInterval(draw, 1000 / 60);
+// requestAnimationFrame(draw); //запускаем таймер, который будет рисовать игру
 
 //Вывлывающиее правила
 const rules = document.querySelector('#rules')
