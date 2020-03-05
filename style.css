@@ -24,6 +24,7 @@ body {
 		display: none;
 	}
 	.global_container .game_container {
+		width: 490px;
 		top: 100px;
 		height: 1024px;
 	}
@@ -33,10 +34,9 @@ body {
 	/* svg#dir-butt-mobile {
 		display: block;
 	} */
-	canvas#game_field {
-		width: 90vw;
-		margin: auto;
-	}
+	/* canvas#game_field {
+		width: 100vw;
+	} */
 
 }
 
