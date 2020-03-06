@@ -1,13 +1,4 @@
 'use strict'
-
-//Получаем кнопки изменения направления из svg 
-//и кладем их в переменные
-const upSvg = document.querySelector('#up');
-const rightSvg = document.querySelector('#right');
-const downSvg = document.querySelector('#down');
-const leftSvg = document.querySelector('#left');
-
-
 const buttStart = document.querySelector('#butt_start');
 buttStart.addEventListener('click', newGame);
 
@@ -138,132 +129,146 @@ function randomizer (a, b) { //a:нижняя граница диапазона,
     return '#' + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16));
   }
 
-  let dir; //Направление движения
-  //когда кликнута svg-стрелка вверх
-function mouseDirUp(EO) {
+  
+let dir; //Направление движения
+let nextDir;
+
+  //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
+function changeDirection(EO) { 
+  EO = EO || window.event;
+  // EO.preventDefault();
+  if (isAudioinit === false) {
+    soundInit();
+  }
+
+  if (EO.keyCode === 37 && dir !== 'right') {
+    nextDir = 'left';
+    console.log('нажата стрелка вправо');
+  } 
+  else if (EO.keyCode === 38 && dir !== 'down') {
+    nextDir = 'up';
+    console.log('нажата стрелка вниз');
+  } 
+  else if (EO.keyCode === 39 && dir !== 'left') {
+    nextDir = 'right';
+    console.log('нажата стрелка влево');
+  } 
+  else if (EO.keyCode === 40 && dir !== 'up') {
+    nextDir = 'down';
+    console.log('нажата стрелка вверх');
+  }
+}
+  
+//Ф-ция прохождения через стены
+function throughWall(snakeX, snakeY) {
+  if (snakeX < 0) {
+    console.log('дошла до стенки');
+    snakeX = fieldSize.x - (cell.size);
+    console.log('прошла через стенку');
+  } 
+  else if (snakeX > (fieldSize.x - cell.size)) {
+    console.log('дошла до стенки');
+    snakeX = 0;
+    console.log('прошла через стенку');
+  } 
+  if (snakeY < 0) {
+    console.log('дошла до стенки');
+    snakeY = fieldSize.y - cell.size;
+    console.log('прошла через стенку');
+  } 
+  else if (snakeY > (fieldSize.y - cell.size)) {
+    console.log('дошла до стенки');
+    snakeY = 0;
+    console.log('прошла через стенку');
+  }
+  return {
+    x: snakeX,
+    y: snakeY
+  };
+}
+
+//Рисование змеи
+function drawSnake() {
+  for (let i = snake.length -1; i >= 0; i--) {
+    context.beginPath();
+    if (partyCheckBox.checked) {
+      context.fillStyle = (i == 0) ? '#52638b' : randomColor();
+    } else {
+      context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
+    }
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0; 
+    context.arc(snake[i].x + cell.quarter * 2, snake[i].y + cell.quarter * 2, cell.quarter * 2, 0, Math.PI*2, false);
+    context.fill();
+    // console.log('нарисован 1 сегмент змейки');
+  }
+}
+
+document.addEventListener('keydown', changeDirection);
+
+//Получаем кнопки изменения направления из svg 
+//и кладем их в переменные
+//Подписываемся на событие click для каждой кнопки-стрелки
+(function() {
+  const upSvgPC = document.querySelector('#up');
+  upSvgPC.addEventListener('click', dirUp);
+  const rightSvgPC = document.querySelector('#right');
+  rightSvgPC.addEventListener('click', dirRight);
+  const downSvgPC = document.querySelector('#down');
+  downSvgPC.addEventListener('click', dirDown);
+  const leftSvgPC = document.querySelector('#left');
+  leftSvgPC.addEventListener('click', dirLeft);
+})();
+//то же самое для кнопок на мобилке
+(function() {
+  const upSvgMob = document.querySelector('#mob-up');
+  upSvgMob.addEventListener('touchstart', dirUp);
+  const rightSvgMob = document.querySelector('#mob-right');
+  rightSvgMob.addEventListener('touchstart', dirRight);
+  const downSvgMob = document.querySelector('#mob-down');
+  downSvgMob.addEventListener('touchstart', dirDown);
+  const leftSvgMob = document.querySelector('#mob-left');
+  leftSvgMob.addEventListener('touchstart', dirLeft);
+})();
+
+function dirUp(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'down') {
     nextDir = 'up';
   }
-  // console.log('EO.target: ', EO.target);
   return;
 }
-//когда кликнута svg-стрелка вправо
-function mouseDirRight(EO) {
+function dirRight(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'left') {
     nextDir = 'right';
   }
-  // console.log('EO.target: ', EO.target);
   return;
 }
-//когда кликнута svg-стрелка вниз
-function mouseDirDown(EO) {
+function dirDown(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'up') {
     nextDir = 'down';
   }
-  // console.log('EO.target: ', EO.target);
   return;
 }
-//когда кликнута svg-стрелка влево
-function mouseDirLeft(EO) {
+function dirLeft(EO) {
   EO = EO || window.event;
   EO.preventDefault();
   if (dir != 'right') {
     nextDir = 'left';
   }
-  // console.log('EO.target: ', EO.target);
   return;
-  
 }
 
-let nextDir;
-  //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
-  function changeDirection(EO) { 
-    EO = EO || window.event;
-    // EO.preventDefault();
-    if (isAudioinit === false) {
-      soundInit();
-    }
-  
-    if (EO.keyCode === 37 && dir !== 'right') {
-      nextDir = 'left';
-      console.log('нажата стрелка вправо');
-    } 
-    else if (EO.keyCode === 38 && dir !== 'down') {
-      nextDir = 'up';
-      console.log('нажата стрелка вниз');
-    } 
-    else if (EO.keyCode === 39 && dir !== 'left') {
-      nextDir = 'right';
-      console.log('нажата стрелка влево');
-    } 
-    else if (EO.keyCode === 40 && dir !== 'up') {
-      nextDir = 'down';
-      console.log('нажата стрелка вверх');
-    }
-  }
-  
-  //Ф-ция прохождения через стены
-  function throughWall(snakeX, snakeY) {
-    if (snakeX < 0) {
-      console.log('дошла до стенки');
-      snakeX = fieldSize.x - (cell.size);
-      console.log('прошла через стенку');
-    } 
-    else if (snakeX > (fieldSize.x - cell.size)) {
-      console.log('дошла до стенки');
-      snakeX = 0;
-      console.log('прошла через стенку');
-    } 
-    if (snakeY < 0) {
-      console.log('дошла до стенки');
-      snakeY = fieldSize.y - cell.size;
-      console.log('прошла через стенку');
-    } 
-    else if (snakeY > (fieldSize.y - cell.size)) {
-      console.log('дошла до стенки');
-      snakeY = 0;
-      console.log('прошла через стенку');
-    }
-    return {
-      x: snakeX,
-      y: snakeY
-    };
-  }
-
-  //Рисование змеи
-  function drawSnake() {
-    for (let i = snake.length -1; i >= 0; i--) {
-      context.beginPath();
-      if (partyCheckBox.checked) {
-        context.fillStyle = (i == 0) ? '#52638b' : randomColor();
-      } else {
-        context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-      }
-      context.shadowBlur = 0;
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0; 
-      context.arc(snake[i].x + cell.quarter * 2, snake[i].y + cell.quarter * 2, cell.quarter * 2, 0, Math.PI*2, false);
-      context.fill();
-      // console.log('нарисован 1 сегмент змейки');
-    }
-  }
-
-  document.addEventListener('keydown', changeDirection);
-  upSvg.addEventListener('click', mouseDirUp);
-  rightSvg.addEventListener('click', mouseDirRight);
-  downSvg.addEventListener('click', mouseDirDown);
-  leftSvg.addEventListener('click', mouseDirLeft);
-
-  function newGame() {
-    // isGameOver = false; // для RequestAnimationFrame
-    document.location.reload();
-  }
+function newGame() {
+  // isGameOver = false; // для RequestAnimationFrame
+  document.location.reload();
+}
 // Проигрыш
 function gameOver() {
   context.clearRect(0, 0, fieldSize.x, fieldSize.y);
@@ -417,5 +422,5 @@ function showRules() {
     isRulesShow = false;
     return;
   }
-
 }
+

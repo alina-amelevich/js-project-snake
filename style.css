@@ -31,6 +31,19 @@ body {
 	svg#dir-butt-object {
 		display: none;
 	}
+	.game_container #butt_rules {
+		top: 472px;
+		right: calc(50% - 440px);
+		width: 100px;
+		height: 35px;
+	}
+	
+		/* top: 482px;
+		right: calc(50% - 240px);
+		width: 100px;
+		height: 35px;
+		margin: 0;
+	} */
 	/* svg#dir-butt-mobile {
 		display: block;
 	} */
@@ -214,17 +227,6 @@ h1 {
 	display: block;
 }
 
-/* #dir-butt-mobile { */
-	/* margin-left: auto;
-	margin-right: auto; */
-	/* position: absolute;
-	width: 176px;
-	height: 174px;
-	left: calc(50% - 87px);
-	top: 432px;
-	z-index: 13;
-	display: block;
-} */
 
 .dir-butt-elem:hover {
 	cursor: pointer;
@@ -260,4 +262,16 @@ h1 {
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	color: transparent;
+}
+
+#dir-butt-mobile { 
+	margin-left: auto;
+	margin-right: auto;
+	position: absolute;
+	width: 176px;
+	height: 174px;
+	left: calc(50% - 87px);
+	top: 432px;
+	z-index: 13;
+	display: block;
 }
