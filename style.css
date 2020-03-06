@@ -234,7 +234,6 @@ h1 {
 .dir-butt-elem:active  {
 	cursor: pointer;
 	filter: url(#inset-shadow);
-	
 }
 
 .btn:hover {
@@ -274,4 +273,7 @@ h1 {
 	top: 432px;
 	z-index: 13;
 	display: block;
+}
+#dir-butt-mobile .dir-butt-elem-mob:active  {
+	filter: url(#inset-shadow-mob);
 }
