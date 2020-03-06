@@ -98,7 +98,7 @@
          
          <path fill="url(#svg_20)" stroke="url(#svg_23)" stroke-width="2" d="m121.97576,179.83884l-0.14284,-60.28552l41.71414,0l0,60.28551l59.85694,0l0,41.57129l-59.71408,0l0,59.85694l-41.857,0l0,-60.42837l-59.28551,0l-0.14286,-40.57129l29.77683,0l29.77682,0" id="svg_13"/>
         </g>
-       </svg>
+      </svg>
 
       <!-- svg mobile buttons -->
       <svg width="176" height="174" xmlns="http://www.w3.org/2000/svg" id="dir-butt-mobile" class="inline_svg">
@@ -124,63 +124,36 @@
           <stop stop-color="#d19695" offset="100%"/>
          </linearGradient>
 
-         <filter id="inset-shadow-mob">
-          <feOffset dx="0" dy="0"></feOffset>
-            <feGaussianBlur stdDeviation="20" result="offset-blur"></feGaussianBlur>
-            <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"></feComposite>
-            <feFlood flood-color="gray" flood-opacity="0.65" result="color"></feFlood>
-            <feComposite operator="in" in="color" in2="inverse" result="shadow"></feComposite>
-            <feComposite operator="over" in="shadow" in2="SourceGraphic"></feComposite>
-         </filter>
         </defs>
-        <g>
+        <filter id="inset-shadow-mob">
+         <feOffset dx="0" dy="0"></feOffset>
+           <feGaussianBlur stdDeviation="20" result="offset-blur"></feGaussianBlur>
+           <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"></feComposite>
+           <feFlood flood-color="gray" flood-opacity="0.65" result="color"></feFlood>
+           <feComposite operator="in" in="color" in2="inverse" result="shadow"></feComposite>
+           <feComposite operator="over" in="shadow" in2="SourceGraphic"></feComposite>
+        </filter>
        
-       <g id="mob-up" class="dir-butt-elem" class="dir-butt-elem-mob">
+       <g id="mob-up" class="dir-butt-elem-mob">
          <path stroke="url(#31)" transform="rotate(90 87.48962402343751,31.659820556640632) " id="svg_7" d="m87.48964,59.90983c15.60277,0 28.25,-12.64802 28.25,-28.25c0,-15.60202 -12.64723,-28.25001 -28.25,-28.25001c-15.60201,0 -28.25001,12.64799 -28.25001,28.25001c0,15.60198 12.648,28.25 28.25001,28.25zm4.53854,-47.15082l6.87338,6.87713l-12.02585,12.02516l12.02585,12.02588l-6.87338,6.87487l-18.8986,-18.90075l18.8986,-18.90229l0,0z" stroke-width="2" fill="url(#30)"/>
          <path fill="#edd5cd" stroke-width="0" d="m100.57609,18.03854l-12.25031,12.24958l12.25031,12.24956l-7.00092,7.00467l-19.25122,-19.25423l19.25122,-19.25571" id="svg_8" stroke="#edd5cd" transform="rotate(90 87.45007324218751,30.287384033203132) "/>
        </g>
-       <g id="mob-right" class="dir-butt-elem" class="dir-butt-elem-mob">
+       <g id="mob-right" class="dir-butt-elem-mob">
          <path stroke="url(#23)" id="svg_6" d="m143.95155,59.11776c-15.56079,0 -28.17538,12.6146 -28.17538,28.17541c0,15.56076 12.61459,28.17541 28.17538,28.17541c15.56079,0 28.17537,-12.61465 28.17537,-28.17541c0,-15.56081 -12.61458,-28.17541 -28.17537,-28.17541zm-4.52653,47.02855l-6.85529,-6.86125l11.99414,-11.99338l-11.99414,-11.99338l6.85529,-6.85532l18.85085,18.8487l-18.85085,18.85463z" stroke-width="2" fill="url(#32)"/>
          <path fill="#edd5cd" stroke-width="0" d="m158.7103,74.9737l-12.25031,12.24957l12.25031,12.24956l-7.00093,7.00467l-19.25122,-19.25423l19.25122,-19.25571" id="svg_4" stroke="#edd5cd" transform="rotate(-180 145.584228515625,87.22253417968749) "/>
        </g>
-       <g id="mob-down" class="dir-butt-elem" class="dir-butt-elem-mob">
+       <g id="mob-down" class="dir-butt-elem-mob">
          <path transform="rotate(90 87.79760742187499,143.67633056640628) " stroke="url(#svg_31)" id="svg_9" d="m87.79765,115.50091c-15.56079,0 -28.17538,12.6146 -28.17538,28.17541c0,15.56076 12.61459,28.17541 28.17538,28.17541c15.56079,0 28.17537,-12.61465 28.17537,-28.17541c0,-15.56081 -12.61458,-28.17541 -28.17537,-28.17541zm-4.52653,47.02855l-6.85529,-6.86125l11.99414,-11.99339l-11.99414,-11.99337l6.85529,-6.85532l18.85085,18.84869l-18.85085,18.85464z" stroke-width="2" fill="url(#30)"/>
          <path fill="#edd5cd" stroke-width="0" d="m101.15801,132.78488l-12.25031,12.24958l12.25031,12.24956l-7.00092,7.00467l-19.25122,-19.25423l19.25122,-19.25571" id="svg_10" stroke="#edd5cd" transform="rotate(-90 88.03198242187504,145.03372192382815) "/>
        </g>
-       <g id="mob-left" class="dir-butt-elem" class="dir-butt-elem-mob">
+       <g id="mob-left" class="dir-butt-elem-mob">
          <path stroke="url(#23)" id="svg_5" d="m32.02003,115.83512c15.72028,0 28.46276,-12.74327 28.46276,-28.46277c0,-15.71952 -12.74248,-28.46277 -28.46276,-28.46277c-15.71952,0 -28.46278,12.74325 -28.46278,28.46277c0,15.7195 12.74326,28.46277 28.46278,28.46277zm4.57271,-47.50594l6.92515,6.92894l-12.11642,12.11572l12.11642,12.11646l-6.92515,6.92665l-19.04093,-19.0431l19.04093,-19.04467l0,0z" stroke-width="2" fill="url(#20)"/>
          <path fill="#edd5cd" stroke-width="0" d="m43.64094,75.26781l-12.25031,12.24957l12.25031,12.24957l-7.00093,7.00467l-19.25121,-19.25423l19.25121,-19.25571" id="svg_3" stroke="#edd5cd"/>
        </g>
-       
       </svg>
+
     </div>
-  </div>
-  <div id="needtoajax">
-    <style>
-      #rules {
-        background:  #edd5cd;
-        border: solid #855f3377 2px;
-        border-radius: 6px;
-        font-family: sans-serif ;
-        font-size: 20px;
-        color: rgb(70, 70, 70);
-        box-sizing: border-box;
-        width: 480px;
-        height: 0px;
-        position: absolute;
-        top: 600px;
-        left: calc(50% - 240px);
-        padding: 20px;
-        box-shadow: 10px 10px 7px lightgray;
-        z-index: 20;
-        opacity: 90%;
-        overflow: hidden;
-        visibility: hidden;
-        transition: height 1s;
-        
-        
-      }
-    </style>
+  
     <div id="rules">
       <p style="text-align: center; font-weight: bold;">
         Правила игры очень просты:)
@@ -200,7 +173,6 @@
       </p>
     </div>
   </div>
-  
-<script src="js/game.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>

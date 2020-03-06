@@ -37,7 +37,9 @@ body {
 		width: 100px;
 		height: 35px;
 	}
-	
+	svg#dir-butt-mobile {
+		display: block;
+	}
 		/* top: 482px;
 		right: calc(50% - 240px);
 		width: 100px;
@@ -272,8 +274,34 @@ h1 {
 	left: calc(50% - 87px);
 	top: 432px;
 	z-index: 13;
-	display: block;
+	display: none;
 }
-#dir-butt-mobile .dir-butt-elem-mob:active  {
+.dir-butt-elem-mob:hover {
+	cursor: pointer;
+}
+.dir-butt-elem-mob:active  {
+	cursor: pointer;
 	filter: url(#inset-shadow-mob);
+}
+
+#rules {
+	background:  #edd5cd;
+	border: solid #855f3377 2px;
+	border-radius: 6px;
+	font-family: sans-serif ;
+	font-size: 20px;
+	color: rgb(70, 70, 70);
+	box-sizing: border-box;
+	width: 480px;
+	height: 0px;
+	position: absolute;
+	top: 600px;
+	left: calc(50% - 240px);
+	padding: 20px;
+	box-shadow: 10px 10px 7px lightgray;
+	z-index: 20;
+	opacity: 90%;
+	overflow: hidden;
+	visibility: hidden;
+	transition: height 1s;
 }
