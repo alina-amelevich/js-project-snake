@@ -316,7 +316,7 @@ h1 {
 
 #records-table {
 	background:  #edd5cd;
-	border: solid #855f33 1px;
+	border: solid #c49391 1px;
 	position: absolute;
 	width: 480px; 
 	height: 336px;
@@ -341,11 +341,11 @@ h1 {
 	width: 70px;
 }
 #records-table td {
-	border: solid #855f33 2px;
+	border: solid #c49391 2px;
 	height: 26px;
 }
 #records-table th {
-	border: solid #855f33 2px;
+	border: solid #c49391 2px;
 	height: 30px;
 	letter-spacing: 1px;
 }
