@@ -288,7 +288,7 @@ h1 {
 
 #rules {
 	background:  #edd5cd;
-	border: solid #855f3377 2px;
+	border: solid #855f3369 2px;
 	border-radius: 6px;
 	font-family: sans-serif ;
 	font-size: 20px;
@@ -306,5 +306,12 @@ h1 {
 	overflow: hidden;
 	visibility: hidden;
 	transition: height 1s;
+}
+
+#close-rules-but {
+	right: 10px;
+	top: 10px;
+	position: absolute;
+	
 }
 

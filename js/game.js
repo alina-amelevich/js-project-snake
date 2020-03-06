@@ -412,7 +412,7 @@ let isRulesShow = false;
 function showRules() {
   if (!isRulesShow) {
     rules.style.visibility = 'visible';
-    rules.style.height = '532px';
+    rules.style.height = '550px';
     isRulesShow = true;
     return;
   }
