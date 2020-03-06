@@ -424,4 +424,12 @@ function showRules() {
   }
 }
 
+//РЕКОРДЫ JSON.parse = recordsArr =[{name: value1, score: value1}, {name: value2, score: value2}, ...]
+
+//Динамич.заполнение таблицы рекордов данными из переданного массива
+function fillTable() {
+  recordTable = document.querySelector('#records-table');
+  
+
+}
 
