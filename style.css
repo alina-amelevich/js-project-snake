@@ -281,7 +281,6 @@ h1 {
 }
 .dir-butt-elem-mob:active  {
 	cursor: pointer;
-	filter: url(#inset-shadow-mob);
 }
 
 #rules {
