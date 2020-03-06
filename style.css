@@ -40,6 +40,9 @@ body {
 	svg#dir-butt-mobile {
 		display: block;
 	}
+	div#rules {
+		top: 134px;	
+	}
 		/* top: 482px;
 		right: calc(50% - 240px);
 		width: 100px;
@@ -304,3 +307,4 @@ h1 {
 	visibility: hidden;
 	transition: height 1s;
 }
+
