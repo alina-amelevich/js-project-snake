@@ -426,14 +426,15 @@ function showRules() {
 
 
 //РЕКОРДЫ JSON.parse = recordsArr =[{name: строка, score: число}, {name: value2, score: value2}, ...]
-const tableNamesArr = document.querySelectorAll('champ-name'); //доступ к ячейкам таблицы
-const tableScoreArr = document.querySelectorAll('champ-score'); //доступ к ячейкам таблицы
+const tableNamesArr = document.querySelectorAll('.champ-name'); //доступ к ячейкам таблицы
+const tableScoreArr = document.querySelectorAll('.champ-score'); //доступ к ячейкам таблицы
 console.log( tableNamesArr, tableScoreArr);
 
-let recordsArr = []; //Массив, получ. с сервера преобразь с пом JSON.parse
+let recordsArr = []; //Массив, получ. с сервера преобраз. с пом JSON.parse
 
-const buttSaveRecord = document.querySelector('#butt_save_record');
-buttSaveRecord.addEventListener('click', startSaving);
+document.querySelector('#butt_save_record').addEventListener('click', startSaving);
+document.querySelector('#butt-all-records').addEventListener('click', showRecords);
+
 function startSaving(EO) {
   EO = EO || window.event;
   preSaveNewChamp();
@@ -469,10 +470,8 @@ function changeRecordsArr(newChamp) {
     recordsArr.pop();
     console.log( 'Обрезанный массив дл.10:', recordsArr);
   }
+  showRecords(recordsArr);
 }
-
-
-
 //Динамич.заполнение таблицы рекордов данными из переданного массива
 function fillTable(recordsArr) {
   for (let i = 0; i < tableNamesArr.length; i++) {
@@ -480,7 +479,10 @@ function fillTable(recordsArr) {
     tableScoreArr[i].textContent = recordsArr[i].score;
   }
 }
-
+function showRecords(recordsArr) {
+  fillTable(recordsArr);
+  document.querySelector('#records-table').style.display = "block";
+}
 
 
  //td:nth-child(1n+2)
