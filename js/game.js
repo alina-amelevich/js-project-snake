@@ -470,6 +470,7 @@ function changeRecordsArr(newChamp) {
     recordsArr.pop();
     console.log( 'Обрезанный массив дл.10:', recordsArr);
   }
+  console.log( 'Первый эл-т массива', recordsArr[0]);
   showRecords(recordsArr);
 }
 //Динамич.заполнение таблицы рекордов данными из переданного массива
