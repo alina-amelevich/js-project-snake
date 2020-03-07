@@ -338,16 +338,40 @@ h1 {
 	width: 383px;
 }
 .col-score {
-	width: 70px;
+	width: 71px;
 }
 #records-table td {
 	border: solid #c49391 2px;
-	height: 26px;
+	height: 24px;
 }
 #records-table th {
 	border: solid #c49391 2px;
-	height: 30px;
+	height: 25px;
 	letter-spacing: 1px;
+}
+
+#records-table tr#close-tr {
+	height: 20px;
+	text-align: center;
+}
+#records-table tr#close-tr #close-td {
+	border-right: none;
+	border-left: none;
+}
+#records-table tr#close-tr #close-td span{
+	color: #7189bf;
+	font-size: 16px;
+	letter-spacing: 3px;
+	padding-left: 35px;
+}
+#records-table tr#close-tr #close-td span:hover{
+	cursor: pointer;
+}
+#records-table tr#close-tr td:first-of-type {
+	border-right: none;
+}
+#records-table tr#close-tr td:last-of-type {
+	border-left: none;
 }
 
 #records-table td.champ-order, #records-table th:first-of-type {
@@ -359,3 +383,4 @@ h1 {
 .champ-score {
 	text-align: center;
 }
+

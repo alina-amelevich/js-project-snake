@@ -391,6 +391,7 @@ function showRules() {
 
 
 //РЕКОРДЫ recordsArr =[{name: строка, score: число}, {name: value2, score: value2}, ...]
+const recordsTable = document.querySelector('#records-table');
 const tableNamesArr = document.querySelectorAll('.champ-name'); //доступ к ячейкам таблицы
 const tableScoreArr = document.querySelectorAll('.champ-score'); //доступ к ячейкам таблицы
 console.log( tableNamesArr, tableScoreArr);
@@ -505,11 +506,21 @@ function fillTable() {
   }
 }
 function showRecords() {
+  recordsTable.style.display = "block";
+
   if (recordsArr.length == 0) {
     onlyFetchforReadRecordsArr()
     .then(() => fillTable());
+
+    //КОНПКА НАЗАД В ТАБЛИЦЕ РЕКОРДОВ
+    document.querySelector('#but-return-from-records').addEventListener('click', returnToGameOver);
   } else {
     fillTable();
+    document.querySelector('#but-return-from-records').style.display = "none"; //скрыть кнопку 'назад' в таблице рекордов
   }
-  document.querySelector('#records-table').style.display = "block";
+}
+
+//КОНПКА НАЗАД В ТАБЛИЦЕ РЕКОРДОВ
+function returnToGameOver() {
+  recordsTable.style.display = "none";
 }
