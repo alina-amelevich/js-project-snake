@@ -1,6 +1,4 @@
 'use strict'
-const buttStart = document.querySelector('#butt_start');
-buttStart.addEventListener('click', newGame);
 
 const backCanvas = document.querySelector('#background_controller');
 const backContext = backCanvas.getContext('2d');
@@ -8,36 +6,38 @@ const backContext = backCanvas.getContext('2d');
 const canvas = document.querySelector('#game_field');
 const context = canvas.getContext('2d');
 
+
+//ПОЛЕ И ЯЧЕЙКИ
 //Размер поля
 const fieldSize = { //параметры должны делиться на размер ячейки без остатка
   x: parseInt(canvas.offsetWidth), 
   y: parseInt(canvas.offsetHeight)
 };
 console.log('Размер поля: ', fieldSize.x, fieldSize.y);
-
-const cellSize = 24;
+const CELL_SIZE = 24; //одная ячейка 24px
 const cell = {
-  size: cellSize, //размер ячейки
-  quarter: cellSize / 4, //четвертинка ячейки
+  size: CELL_SIZE, //размер ячейки
+  quarter: CELL_SIZE / 4, //четвертинка ячейки
   amount: { //кол-во ячеек
-    x: fieldSize.x / cellSize,
-    y: fieldSize.y / cellSize
+    x: fieldSize.x / CELL_SIZE,
+    y: fieldSize.y / CELL_SIZE
   },
   center: { // центральная ячейка на поле, округл в меньшую сторону
-    x: Math.floor(fieldSize.x / 2 / cellSize),
-    y: Math.floor(fieldSize.y / 2 / cellSize)
+    x: Math.floor(fieldSize.x / 2 / CELL_SIZE),
+    y: Math.floor(fieldSize.y / 2 / CELL_SIZE)
   }
 };
 console.log('Кол-во ячеек: ', cell.amount.x, cell.amount.y);
 console.log('Центральная ячейка: ', cell.center.x, cell.center.y);
 
 // let isGameOver = false; // для RequestAnimationFrame
+
+//CЧЕТ СЧЕТ СЧЕТ
 const scoreSpan = document.querySelector('#score_value');
 let score = 0; //счет
 
-// let reachWall = {}; //инфа до какой стены дошла змея
 
-//еда
+//ЕДА ЕДА ЕДА
 const foodArray = [ //массив со всеми картинками еды
   'img/food1.png',
   'img/food2.png',
@@ -57,181 +57,102 @@ const foodArray = [ //массив со всеми картинками еды
   'img/food16.png',
   'img/food17.png',
 ];
-
 let foodImg = new Image(); 
 foodImg.src = foodArray[randomizer(0, foodArray.length - 1)]; //рандомная еда
-
 let food = { //рандомная генерация еды
   x: Math.floor(Math.random() * cell.amount.x) * cell.size,
   y: Math.floor(Math.random() * cell.amount.y) * cell.size
 };
-// console.log('Еда сейчас по оси X: ', food.x);
-// console.log('Еда сейчас по оси Y: ', food.y);
-
 let isFoodChange = false; //указывается, если еда требует перегенерации
 
+
+//ЗМЕЙКА ЗМЕЙКА ЗМЕЙКА
 let snake = [];
 let segmentCount = 16; //
-
-
 //Скорость змейки (на столько пикселей она сдвигается за один кадр)
 const speed = cell.size / 6;
-
 //Первоначальные координаты змеи
 snake[0] = {
   x: cell.center.x * cell.size,
   y: cell.center.y * cell.size
 };
-
-// let partyMode = false; 
-//режим вечеринки
+//режим вечеринки - змейка мигает разными цветами
 const partyCheckBox = document.querySelector('#party-checkbox');
 
-// function party() {
-//   partyMode = true;
-// }
 
+//ЗВУКИ ЗВУКИ ЗВУКИ
 let isAudioinit = false;
 //Создаем объекты Audio
 const audioGameOver = new Audio('sound/gameover.mp3');
 const audioEat = new Audio('sound/eat.mp3');
-const audioBump = new Audio('sound/pop.mp3');
 function soundInit() {
   isAudioinit = true;
   audioGameOver.play();
   audioGameOver.pause(); 
   audioEat.play();
   audioEat.pause(); 
-  audioBump.play();
-  audioBump.pause(); 
 }
-
 function soundEat() {
   audioEat.currentTime=0.5;
   audioEat.play();
-}
-function soundBump() {
-  audioBump.currentTime=0.5;
-  audioBump.play();
 }
 function soundGameOver() {
   audioGameOver.currentTime=0;
   audioGameOver.play();
 }
 
-function randomizer(a, b) { //a:нижняя граница диапазона, b:верхняя
+
+//Ф-ЦИЯ ДЛЯ РАНДОМНЫХ ЧИСЕЛ В ДИАПАЗОНЕ от a до b
+function randomizer(a, b) { //a:ниж граница диапазона, b:верхняя
   return Math.floor(
     Math.random() * (b - a + 1)
     ) + a;
   }
+//Ф-ЦИЯ ДЛЯ РАНДОМНОГО ЦВЕТА
+function randomColor() {
+  return '#' + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16));
+}
 
-  function randomColor() {
-    return '#' + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16)) + ((~~(Math.random() * 255)).toString(16));
-  }
 
-  
-let dir; //Направление движения
-let nextDir;
+//НАПРАВЛЕНИЕ ДВИЖЕНИЯ
+document.addEventListener('keydown', changeDirection); //событие срабатывает на любую нажатую клавишу
+(function() { //подписываемся на событие click для каждой кнопки-стрелки (svg)
+  document.querySelector('#up').addEventListener('click', dirUp);
+  document.querySelector('#right').addEventListener('click', dirRight);
+  document.querySelector('#down').addEventListener('click', dirDown);
+  document.querySelector('#left').addEventListener('click', dirLeft);
+})();
+(function() { //то же самое для touch для кнопок на мобилке (svg)
+  document.querySelector('#mob-up').addEventListener('touchstart', dirUp);
+  document.querySelector('#mob-right').addEventListener('touchstart', dirRight);
+  document.querySelector('#mob-down').addEventListener('touchstart', dirDown);
+  document.querySelector('#mob-left').addEventListener('touchstart', dirLeft);
+})();
 
-  //Ф-ция кладет в переменную напр. движения в завис. от нажатой клавиши
+let dir; //хранит направление движ-я
+let nextDir; //хранит будущее направление движ-я
+
+//Ф-ЦИЯ в завис. от нажатой клавиши выз. соотв. ф-цию изм-я напрвл-я и делает soundInit()
 function changeDirection(EO) { 
   EO = EO || window.event;
-  // EO.preventDefault();
+
   if (isAudioinit === false) {
     soundInit();
   }
 
-  if (EO.keyCode === 37 && dir !== 'right') {
-    nextDir = 'left';
-    console.log('нажата стрелка вправо');
+  if (EO.keyCode === 38) {
+    dirUp(EO);
   } 
-  else if (EO.keyCode === 38 && dir !== 'down') {
-    nextDir = 'up';
-    console.log('нажата стрелка вниз');
+  else if (EO.keyCode === 39) {
+    dirRight(EO);
   } 
-  else if (EO.keyCode === 39 && dir !== 'left') {
-    nextDir = 'right';
-    console.log('нажата стрелка влево');
-  } 
-  else if (EO.keyCode === 40 && dir !== 'up') {
-    nextDir = 'down';
-    console.log('нажата стрелка вверх');
+  else if (EO.keyCode === 40) {
+    dirDown(EO);
   }
-}
-  
-//Ф-ция прохождения через стены
-function throughWall(snakeX, snakeY) {
-  if (snakeX < 0) {
-    console.log('дошла до стенки');
-    snakeX = fieldSize.x - (cell.size);
-    console.log('прошла через стенку');
+  else if (EO.keyCode === 37) {
+    dirLeft(EO);
   } 
-  else if (snakeX > (fieldSize.x - cell.size)) {
-    console.log('дошла до стенки');
-    snakeX = 0;
-    console.log('прошла через стенку');
-  } 
-  if (snakeY < 0) {
-    console.log('дошла до стенки');
-    snakeY = fieldSize.y - cell.size;
-    console.log('прошла через стенку');
-  } 
-  else if (snakeY > (fieldSize.y - cell.size)) {
-    console.log('дошла до стенки');
-    snakeY = 0;
-    console.log('прошла через стенку');
-  }
-  return {
-    x: snakeX,
-    y: snakeY
-  };
 }
-
-//Рисование змеи
-function drawSnake() {
-  for (let i = snake.length -1; i >= 0; i--) {
-    context.beginPath();
-    if (partyCheckBox.checked) {
-      context.fillStyle = (i == 0) ? '#52638b' : randomColor();
-    } else {
-      context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
-    }
-    context.shadowBlur = 0;
-    context.shadowOffsetX = 0;
-    context.shadowOffsetY = 0; 
-    context.arc(snake[i].x + cell.quarter * 2, snake[i].y + cell.quarter * 2, cell.quarter * 2, 0, Math.PI*2, false);
-    context.fill();
-    // console.log('нарисован 1 сегмент змейки');
-  }
-}
-
-document.addEventListener('keydown', changeDirection);
-
-//Получаем кнопки изменения направления из svg 
-//и кладем их в переменные
-//Подписываемся на событие click для каждой кнопки-стрелки
-(function() {
-  const upSvgPC = document.querySelector('#up');
-  upSvgPC.addEventListener('click', dirUp);
-  const rightSvgPC = document.querySelector('#right');
-  rightSvgPC.addEventListener('click', dirRight);
-  const downSvgPC = document.querySelector('#down');
-  downSvgPC.addEventListener('click', dirDown);
-  const leftSvgPC = document.querySelector('#left');
-  leftSvgPC.addEventListener('click', dirLeft);
-})();
-//то же самое для кнопок на мобилке
-(function() {
-  const upSvgMob = document.querySelector('#mob-up');
-  upSvgMob.addEventListener('touchstart', dirUp);
-  const rightSvgMob = document.querySelector('#mob-right');
-  rightSvgMob.addEventListener('touchstart', dirRight);
-  const downSvgMob = document.querySelector('#mob-down');
-  downSvgMob.addEventListener('touchstart', dirDown);
-  const leftSvgMob = document.querySelector('#mob-left');
-  leftSvgMob.addEventListener('touchstart', dirLeft);
-})();
-
 function dirUp(EO) {
   EO = EO || window.event;
   EO.preventDefault();
@@ -265,106 +186,121 @@ function dirLeft(EO) {
   return;
 }
 
-function newGame() {
-  // isGameOver = false; // для RequestAnimationFrame
-  document.location.reload();
-}
-// Проигрыш
-function gameOver() {
-  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
-  // document.location.reload();
-  // isGameOver = true; // для RequestAnimationFrame
-  clearInterval(game);
-  //if (score > ..)
-  showHiddenRecord();
-  //else showHiddenLose() прописать ф-цию и сделать dom-елемент
-}
 
-//Показывает текст и кнопки после game over
-function showHiddenRecord() {
-  const recordText = document.querySelector('.hidden');
-  recordText.style.display = "block";
-  const finalScore = document.querySelector('#final_score');
-  finalScore.textContent = score;
-  soundGameOver();
-}
-
-
-function draw() {
-  // console.log('рисование запущено');
-  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
-
-
-  //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова.
-  try {
-    if (isFoodChange) {
-      isFoodChange = false; //рандомная еда
-      foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
+//РИСОВАНИЕ ЗМЕИ
+function drawSnake() {
+  for (let i = snake.length -1; i >= 0; i--) {
+    context.beginPath();
+    if (partyCheckBox.checked) {
+      context.fillStyle = (i == 0) ? '#52638b' : randomColor();
+    } else {
+      context.fillStyle = (i == 0) ? '#52638b' : '#7189bf';
     }
-    context.shadowBlur = 20;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 2;
-    context.shadowColor = '#be6c6a'; 
-    context.drawImage(foodImg, food.x, food.y); //рисование еды
+    context.shadowBlur = 0;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0; 
+    context.arc(snake[i].x + cell.quarter * 2, snake[i].y + cell.quarter * 2, cell.quarter * 2, 0, Math.PI*2, false);
+    context.fill();
   }
-  catch (ex) {
-    console.error('возникло исключение типа: ' + ex.name);
-    isFoodChange = true;
-    if (isFoodChange) {
-      isFoodChange = false;
-      foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
-    }
-    context.shadowBlur = 20;
-    context.shadowOffsetX = 1;
-    context.shadowOffsetY = 2;
-    context.shadowColor = '#be6c6a'; 
-    context.drawImage(foodImg, food.x, food.y);
-  }
+}
 
-  let snakeX = snake[0].x; //Первоначальные координаты змеи для расчетов
+
+//ЧЕРЕЗ СТЕНЫ
+function throughWall(snakeX, snakeY) {
+  if (snakeX < 0) {
+    snakeX = fieldSize.x - (cell.size);
+  } 
+  else if (snakeX > (fieldSize.x - cell.size)) {
+    snakeX = 0;
+  } 
+  if (snakeY < 0) {
+    snakeY = fieldSize.y - cell.size;
+  } 
+  else if (snakeY > (fieldSize.y - cell.size)) {
+    snakeY = 0;
+  }
+  return {
+    x: snakeX,
+    y: snakeY
+  };
+}
+
+
+function renderingСontrol() {
+  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
+
+  //ЗАПУСК ГЕНЕРАЦИИ ЕДЫ
+  (function () {
+    try { //Если происходит ошибка при генерации еды, она ловится и генерация запускается снова. (На всякий случай)
+      if (isFoodChange) {
+        isFoodChange = false; //рандомная еда
+        foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
+      }
+      context.shadowBlur = 20;
+      context.shadowOffsetX = 1;
+      context.shadowOffsetY = 2;
+      context.shadowColor = '#be6c6a'; 
+      context.drawImage(foodImg, food.x, food.y); //рисование еды
+    }
+    catch (ex) {
+      console.error('возникло исключение типа: ' + ex.name);
+      isFoodChange = true;
+      if (isFoodChange) {
+        isFoodChange = false;
+        foodImg.src = foodArray[randomizer(0, foodArray.length - 1)];
+      }
+      context.shadowBlur = 20;
+      context.shadowOffsetX = 1;
+      context.shadowOffsetY = 2;
+      context.shadowColor = '#be6c6a'; 
+      context.drawImage(foodImg, food.x, food.y);
+    }
+  })()
+
+  //Первоначальные координаты змеи
+  let snakeX = snake[0].x; 
   let snakeY = snake[0].y;
-  
-  //Движение змеи
-  if (snakeX % cell.size === 0 && (nextDir == 'up' || nextDir == 'down')) {
-    dir = nextDir;
-    nextDir = '';
-  } else if (snakeY % cell.size === 0 && (nextDir == 'right' || nextDir == 'left')) {
-    dir = nextDir;
-    nextDir = '';
-  }
 
-
-  if (dir == 'left') { 
-    snakeX -= speed;
-  }
-  else if (dir == 'up') {
-    snakeY -= speed;
-  }
-  else if (dir == 'right') {
-    snakeX += speed;
-  }
-  else if (dir == 'down') {
-    snakeY += speed;
-  }
+  //ЛОГИКА ДВИЖЕНИЯ ЗМЕИ
+  (function () {
+      //Змейка поворачивает только в координатах ячеек
+    if (snakeX % cell.size === 0 && (nextDir == 'up' || nextDir == 'down')) {
+      dir = nextDir;
+      nextDir = '';
+    } else if (snakeY % cell.size === 0 && (nextDir == 'right' || nextDir == 'left')) {
+      dir = nextDir;
+      nextDir = '';
+    }
+      //Поворот змейки
+    if (dir == 'left') { 
+      snakeX -= speed;
+    }
+    else if (dir == 'up') {
+      snakeY -= speed;
+    }
+    else if (dir == 'right') {
+      snakeX += speed;
+    }
+    else if (dir == 'down') {
+      snakeY += speed;
+    }
+  })()
   
   //Переменная для хрананения позиции змейки после прохождения через стену
   let afterWallPos = {};
-
   //Если змея достигла стены, вызывается ф-ция прохождения через стену
   if (snakeX < 0 || snakeX > (fieldSize.x - cell.size)
   || snakeY < 0 || snakeY > (fieldSize.y - cell.size)) 
   {
-    // console.log('было snakeX: ', snakeX, '\n было snakeY: ', snakeY);
     afterWallPos = throughWall(snakeX, snakeY);
     snakeX = afterWallPos.x;
     snakeY = afterWallPos.y;
-    // console.log('стало snakeX: ', snakeX, '\n стало snakeY: ', snakeY);
   }
 
-  //Запуск рисования змеи
+  //ЗАПУСКАЕМ РИСОВАНИЕ ЗМЕИ
   drawSnake();
 
-  //Как змея кушает
+  //ПИТАНИЕ ЗМЕИ
   if (snakeX == food.x && snakeY == food.y) {
     score++;
     soundEat();
@@ -387,27 +323,56 @@ function draw() {
     x: snakeX,
     y: snakeY
   };
-  
-    for(let i = 0; i < snake.length; i++) {
-      if (newHead.x === snake[i].x && newHead.y === snake[i].y ) {
-        // console.log('хвост съеден');
-        setTimeout(gameOver, 100);
-      }
+
+  //ЦИКЛ проверки на столкновение с хвостом
+  for(let i = 0; i < snake.length; i++) {
+    if (newHead.x === snake[i].x && newHead.y === snake[i].y ) {
+      // console.log('хвост съеден');
+      setTimeout(gameOver, 100);
     }
-  
-  //Добавляем элемент 'голова' в массив змеи
+  }
+
+  //Добавляем элемент 'голова' в начало массива змеи
   snake.unshift(newHead); 
 
   // if (!isGameOver) {
-  //   requestAnimationFrame(draw);
+  //   requestAnimationFrame(renderingСontrol);
   // }
 }
 
-let game = setInterval(draw, 1000 / 60);
-// requestAnimationFrame(draw); //запускаем таймер, который будет рисовать игру
 
-//Вывлывающиее правила
-const rules = document.querySelector('#rules')
+let game = setInterval(renderingСontrol, 1000 / 60);
+// requestAnimationFrame(renderingСontrol; //запускаем таймер, который будет рисовать игру
+
+
+//НОВАЯ ИГРА при щелчке на кнопку ' Старт'
+document.querySelector('#butt_start').addEventListener('click', newGame);
+function newGame() {
+  // isGameOver = false; // для RequestAnimationFrame
+  document.location.reload();
+}
+
+//GAMEOVER GAMEOVER GAMEOVER 
+function gameOver() {
+  context.clearRect(0, 0, fieldSize.x, fieldSize.y);
+  // isGameOver = true; // для RequestAnimationFrame
+  clearInterval(game);
+  showHiddenRecord();
+}
+//Показывает скрытый блок с текстом и кнопками после game over
+function showHiddenRecord() {
+  const recordText = document.querySelector('.hidden');
+  recordText.style.display = "block";
+  const finalScore = document.querySelector('#final_score');
+  finalScore.textContent = score;
+  soundGameOver();
+}
+
+
+//ВСПЛЫВАЮЩИЕ ПРАВИЛА
+document.querySelector('#butt_rules').addEventListener('click', showRules);
+document.querySelector('#close-rules-but').addEventListener('click', showRules);
+const rules = document.querySelector('#rules');
 let isRulesShow = false;
 function showRules() {
   if (!isRulesShow) {
