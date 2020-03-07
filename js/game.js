@@ -395,6 +395,8 @@ const tableNamesArr = document.querySelectorAll('.champ-name'); //доступ �
 const tableScoreArr = document.querySelectorAll('.champ-score'); //доступ к ячейкам таблицы
 console.log( tableNamesArr, tableScoreArr);
 
+const ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php"; //Сервис для храниения переданных строк AjaxStringStorage2
+
 let recordsArr = []; //Массив, получ. с сервера преобраз. с пом JSON.parse
 const AJAX_PROJECT_NAME = 'amelevich_alina_2020_project_snake';
 
@@ -419,10 +421,25 @@ function preSaveNewChamp() {
   fetchAndFillRecordsArr()
     .then(() => saveNewChamp(nameValue, scoreValue)); //при успехе вызываем след.ф-цию для сохранения значений в хэш
 }
+
+//только чтение массива с сервера без планирования изменения
+function onlyFetchforReadRecordsArr() {
+  // отдельно создаём набор POST-параметров запроса
+  let postParams = new URLSearchParams();
+  postParams.append('f', 'READ');
+  postParams.append('n', AJAX_PROJECT_NAME);
+
+  return fetch(ajaxHandlerScript, { method: 'post', body: postParams })
+    .then( response => response.json() )
+    .then( data => { recordsArr = JSON.parse(data.result || '[]'); } )
+    .catch( error => { 
+      console.error(error); 
+      alert('Ошибка отображения рекордов!');
+    });
+}
 let updatePassword;
 //чтение массива с сервера и планирование его изменения
 function fetchAndFillRecordsArr() {
-  const ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
   updatePassword = Math.random();
 
   // отдельно создаём набор POST-параметров запроса
@@ -441,8 +458,6 @@ function fetchAndFillRecordsArr() {
 }
 //обновление массива на сервере
 function updateOnServerRecordsArr() {
-  const ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
-
   // отдельно создаём набор POST-параметров запроса
   let postParams = new URLSearchParams();
   postParams.append('f', 'UPDATE');
@@ -490,6 +505,11 @@ function fillTable() {
   }
 }
 function showRecords() {
-  fillTable();
+  if (recordsArr.length == 0) {
+    onlyFetchforReadRecordsArr()
+    .then(() => fillTable());
+  } else {
+    fillTable();
+  }
   document.querySelector('#records-table').style.display = "block";
 }
