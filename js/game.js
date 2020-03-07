@@ -430,18 +430,31 @@ const tableNamesArr = document.querySelectorAll('champ-name'); //доступ к
 const tableScoreArr = document.querySelectorAll('champ-score'); //доступ к ячейкам таблицы
 console.log( tableNamesArr, tableScoreArr);
 
-let recordsArr = [];
-//Динамич.заполнение таблицы рекордов данными из переданного массива
-function fillTable(recordsArr) {
-  for (let i = 0; i < recordsArr.length; i++) {
-    tableNamesArr[i].textContent = recordsArr[i].name;
-    tableScoreArr[i].textContent = recordsArr[i].score;
-  }
+let recordsArr = []; //Массив, получ. с сервера преобразь с пом JSON.parse
+
+const buttSaveRecord = document.querySelector('#butt_save_record');
+buttSaveRecord.addEventListener('click', startSaving);
+function startSaving(EO) {
+  EO = EO || window.event;
+  preSaveNewChamp();
 }
-let newChamp = {};
+function preSaveNewChamp() {
+  //сохраняем счет в переменную
+  const scoreValue = score;
+  //Получаем введенный в поле текст (имя пользователя)
+  const userNameInput = document.querySelector('#user_name');
+  let nameValue = userNameInput.value.trim();
+  if (!nameValue) {
+    userNameInput.style.background = '#d97b7a';
+    return;
+  }
+  saveNewChamp(nameValue, scoreValue); //сразу вызываем след.ф-цию для сохранения значений в хэш
+}
 function saveNewChamp(nameValue, scoreValue) {
+  let newChamp = {};
   newChamp.name = nameValue; //nameValue - строка
   newChamp.score = scoreValue; //scoreValue - число
+  changeRecordsArr(newChamp); //сразу вызываем след.ф-цию для изменения массива
 }
 //Доб нов.результата в массив рекордов, сортировка по результатам и "выбывание" последнего элемента массива, если больше 10 эл-тов
 function changeRecordsArr(newChamp) {
@@ -452,12 +465,21 @@ function changeRecordsArr(newChamp) {
   }
   recordsArr.sort(compareScore);
   console.log( 'Отсортированный массив дл.11:', recordsArr);
-  if (recordArr.length > 10) { //10- кол-во мест в таблице рекордов
+  if (recordsArr.length > 10) { //10- кол-во мест в таблице рекордов
     recordsArr.pop();
-  console.log( 'Обрезанный массив дл.10:', recordsArr);
+    console.log( 'Обрезанный массив дл.10:', recordsArr);
   }
 }
 
+
+
+//Динамич.заполнение таблицы рекордов данными из переданного массива
+function fillTable(recordsArr) {
+  for (let i = 0; i < tableNamesArr.length; i++) {
+    tableNamesArr[i].textContent = recordsArr[i].name;
+    tableScoreArr[i].textContent = recordsArr[i].score;
+  }
+}
 
 
 

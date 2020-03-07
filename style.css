@@ -325,7 +325,7 @@ h1 {
 	left: calc(50% - 240px);
 	top: calc((404px - 336px) / 2);
 	box-sizing: content-box;
-	display: block;
+	display: none;
 	border-collapse: collapse;
 	font-family: sans-serif ;
 	font-size: 14px;
