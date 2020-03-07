@@ -424,12 +424,41 @@ function showRules() {
   }
 }
 
-//РЕКОРДЫ JSON.parse = recordsArr =[{name: value1, score: value1}, {name: value2, score: value2}, ...]
 
+//РЕКОРДЫ JSON.parse = recordsArr =[{name: строка, score: число}, {name: value2, score: value2}, ...]
+const tableNamesArr = document.querySelectorAll('champ-name'); //доступ к ячейкам таблицы
+const tableScoreArr = document.querySelectorAll('champ-score'); //доступ к ячейкам таблицы
+console.log( tableNamesArr, tableScoreArr);
+
+let recordsArr = [];
 //Динамич.заполнение таблицы рекордов данными из переданного массива
-function fillTable() {
-  recordTable = document.querySelector('#records-table');
-  
-
+function fillTable(recordsArr) {
+  for (let i = 0; i < recordsArr.length; i++) {
+    tableNamesArr[i].textContent = recordsArr[i].name;
+    tableScoreArr[i].textContent = recordsArr[i].score;
+  }
+}
+let newChamp = {};
+function saveNewChamp(nameValue, scoreValue) {
+  newChamp.name = nameValue; //nameValue - строка
+  newChamp.score = scoreValue; //scoreValue - число
+}
+//Доб нов.результата в массив рекордов, сортировка по результатам и "выбывание" последнего элемента массива, если больше 10 эл-тов
+function changeRecordsArr(newChamp) {
+  recordsArr.push(newChamp);
+  console.log( 'Массив с новым эл-том:', recordsArr);
+  function compareScore(a, b) {
+    return b.score - a.score;
+  }
+  recordsArr.sort(compareScore);
+  console.log( 'Отсортированный массив дл.11:', recordsArr);
+  if (recordArr.length > 10) { //10- кол-во мест в таблице рекордов
+    recordsArr.pop();
+  console.log( 'Обрезанный массив дл.10:', recordsArr);
+  }
 }
 
+
+
+
+ //td:nth-child(1n+2)
