@@ -119,7 +119,7 @@ function soundGameOver() {
   audioGameOver.play();
 }
 
-function randomizer (a, b) { //a:нижняя граница диапазона, b:верхняя
+function randomizer(a, b) { //a:нижняя граница диапазона, b:верхняя
   return Math.floor(
     Math.random() * (b - a + 1)
     ) + a;
@@ -425,12 +425,13 @@ function showRules() {
 }
 
 
-//РЕКОРДЫ JSON.parse = recordsArr =[{name: строка, score: число}, {name: value2, score: value2}, ...]
+//РЕКОРДЫ recordsArr =[{name: строка, score: число}, {name: value2, score: value2}, ...]
 const tableNamesArr = document.querySelectorAll('.champ-name'); //доступ к ячейкам таблицы
 const tableScoreArr = document.querySelectorAll('.champ-score'); //доступ к ячейкам таблицы
 console.log( tableNamesArr, tableScoreArr);
 
 let recordsArr = []; //Массив, получ. с сервера преобраз. с пом JSON.parse
+const AJAX_PROJECT_NAME = 'amelevich_alina_2020_project_snake';
 
 document.querySelector('#butt_save_record').addEventListener('click', startSaving);
 document.querySelector('#butt-all-records').addEventListener('click', showRecords);
@@ -449,8 +450,49 @@ function preSaveNewChamp() {
     userNameInput.style.background = '#d97b7a';
     return;
   }
-  saveNewChamp(nameValue, scoreValue); //сразу вызываем след.ф-цию для сохранения значений в хэш
+  fetchAndFillRecordsArr()
+    .then(() => saveNewChamp(nameValue, scoreValue)); //при успехе вызываем след.ф-цию для сохранения значений в хэш
 }
+let updatePassword;
+//чтение массива с сервера и планирование его изменения
+function fetchAndFillRecordsArr() {
+  const ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
+  updatePassword = Math.random();
+
+  // отдельно создаём набор POST-параметров запроса
+  let postParams = new URLSearchParams();
+  postParams.append('f', 'LOCKGET');
+  postParams.append('n', AJAX_PROJECT_NAME);
+  postParams.append('p', updatePassword);
+
+  return fetch(ajaxHandlerScript, { method: 'post', body: postParams })
+    .then( response => response.json() )
+    .then( data => { recordsArr = JSON.parse(data.result || '[]'); } )
+    .catch( error => { 
+      console.error(error); 
+      alert('Ошибка сохранения!');
+    });
+}
+//обновление массива на сервере
+function updateOnServerRecordsArr() {
+  const ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
+
+  // отдельно создаём набор POST-параметров запроса
+  let postParams = new URLSearchParams();
+  postParams.append('f', 'UPDATE');
+  postParams.append('n', AJAX_PROJECT_NAME);
+  postParams.append('p', updatePassword);
+  postParams.append('v', JSON.stringify(recordsArr));
+
+  return fetch(ajaxHandlerScript, { method: 'post', body: postParams })
+    .then( response => response.json() )
+    .then( data => { console.log('успешно сохранено: ', data); } )
+    .catch( error => { 
+      console.error(error); 
+      alert('Ошибка сохранения!');
+    });
+}
+
 function saveNewChamp(nameValue, scoreValue) {
   let newChamp = {};
   newChamp.name = nameValue; //nameValue - строка
@@ -467,23 +509,21 @@ function changeRecordsArr(newChamp) {
   recordsArr.sort(compareScore);
   console.log( 'Отсортированный массив дл.11:', recordsArr);
   if (recordsArr.length > 10) { //10- кол-во мест в таблице рекордов
-    recordsArr.pop();
+    recordsArr = recordsArr.slice(0, 10);
     console.log( 'Обрезанный массив дл.10:', recordsArr);
   }
   console.log( 'Первый эл-т массива', recordsArr[0]);
-  showRecords(recordsArr);
+  updateOnServerRecordsArr()
+  .then(() =>  showRecords());
 }
 //Динамич.заполнение таблицы рекордов данными из переданного массива
-function fillTable(recordsArr) {
-  for (let i = 0; i < tableNamesArr.length; i++) {
+function fillTable() {
+  for (let i = 0; i < recordsArr.length; i++) {
     tableNamesArr[i].textContent = recordsArr[i].name;
     tableScoreArr[i].textContent = recordsArr[i].score;
   }
 }
-function showRecords(recordsArr) {
-  fillTable(recordsArr);
+function showRecords() {
+  fillTable();
   document.querySelector('#records-table').style.display = "block";
 }
-
-
- //td:nth-child(1n+2)
