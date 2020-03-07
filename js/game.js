@@ -447,7 +447,8 @@ function preSaveNewChamp() {
   const userNameInput = document.querySelector('#user_name');
   let nameValue = userNameInput.value.trim();
   if (!nameValue) {
-    userNameInput.style.background = '#d97b7a';
+    userNameInput.style.background = '#d6908f';
+    userNameInput.focus();
     return;
   }
   fetchAndFillRecordsArr()
